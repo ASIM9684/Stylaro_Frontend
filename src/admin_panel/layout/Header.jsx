@@ -1,12 +1,11 @@
-// Header.js
 import { Bell, Menu } from "lucide-react";
 
 const Header = ({ toggleSidebar }) => {
   return (
     <header className="bg-white shadow flex justify-between items-center p-4 px-6 sticky top-0 z-30">
       <div className="flex items-center gap-4">
-        {/* Hamburger icon only on mobile */}
-        <button className="md:hidden" onClick={toggleSidebar}>
+
+        <button className="lg:hidden" onClick={toggleSidebar}>
           <Menu className="w-6 h-6 text-gray-600" />
         </button>
         <h2 className="text-xl font-bold">Admin Dashboard</h2>

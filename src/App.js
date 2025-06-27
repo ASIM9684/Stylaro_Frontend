@@ -17,6 +17,7 @@ import EditColor from "./admin_panel/pages/Color/EditColor";
 import AddProduct from "./admin_panel/pages/Product/AddProduct";
 import ProductList from "./admin_panel/pages/Product/ProductList";
 import EditProduct from "./admin_panel/pages/Product/EditProduct";
+import ComplainList from "./admin_panel/pages/Complain/ComplainList";
 
 export default function App() {
   return (
@@ -143,6 +144,14 @@ export default function App() {
           element={
             <LayoutAdmin>
               <EditProduct />
+            </LayoutAdmin>
+          }
+        />
+                <Route
+          path="/admin/ComplainList"
+          element={
+            <LayoutAdmin>
+              <ComplainList />
             </LayoutAdmin>
           }
         />

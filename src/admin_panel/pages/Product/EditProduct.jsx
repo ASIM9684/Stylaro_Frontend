@@ -79,7 +79,7 @@ const EditProduct = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const success = await UpdateApi(formData, "updateProduct", id);
+    const success = await UpdateApi(formData, "updateProduct", id,navigate);
 
     if (success) {
       setFormData({

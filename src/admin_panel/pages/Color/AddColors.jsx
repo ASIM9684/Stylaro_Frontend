@@ -1,17 +1,19 @@
 import React, { useState } from "react";
 import { addApi } from "../../../model/Model";
+import { useNavigate } from "react-router-dom";
 
 const AddColors = () => {
   const [name, setName] = useState("");
-
+  const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const data = { name };
-    const success = await addApi(data, "add-color");
+    const success = await addApi(data, "add-color", navigate);
 
     if (success) {
-      setName(""); 
+      setName("");
+      navigate("/admin/ColorList")
     }
   };
 

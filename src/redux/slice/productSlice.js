@@ -5,9 +5,15 @@ const API_URL = "http://localhost:8000/product";
 
 export const fetchproducts = createAsyncThunk(
   "product/fetchAll",
-  async () => {
-    const response = await axios.get(API_URL);
-    return response.data;
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(API_URL);
+      return response.data;
+    } catch (error) {
+      const message =
+        error.response?.data?.message || error.message || "Unknown error";
+      return rejectWithValue(message);
+    }
   },
   {
     condition: (_, { getState }) => {
@@ -41,7 +47,7 @@ const productSlice = createSlice({
       })
       .addCase(fetchproducts.rejected, (state, action) => {
         state.loadingproduct = false;
-        state.errorproduct = action.errorproduct.message;
+        state.errorproduct = action.payload || action.error.message;
       });
   },
 });

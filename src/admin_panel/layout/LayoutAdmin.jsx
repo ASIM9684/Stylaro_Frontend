@@ -11,7 +11,7 @@ const LayoutAdmin = ({ children }) => {
   return (
     <div className="flex">
       <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
-      <div className="flex-1 min-h-screen bg-gray-100 md:ml-64">
+      <div className="flex-1 min-h-screen bg-gray-100 lg:ml-64">
         <Header toggleSidebar={toggleSidebar} />
         <main className="p-6">{children}</main>
       </div>

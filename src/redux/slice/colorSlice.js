@@ -5,9 +5,15 @@ const API_URL = "http://localhost:8000/colors";
 
 export const fetchColors = createAsyncThunk(
   "color/fetchAll",
-  async () => {
-    const response = await axios.get(API_URL);
-    return response.data;
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(API_URL);
+      return response.data;
+    } catch (error) {
+      const message =
+        error.response?.data?.message || error.message || "Unknown error";
+      return rejectWithValue(message);
+    }
   },
   {
     condition: (_, { getState }) => {
@@ -41,7 +47,7 @@ const colorSlice = createSlice({
       })
       .addCase(fetchColors.rejected, (state, action) => {
         state.loadingColor = false;
-        state.errorColor = action.errorColor.message;
+        state.errorColor = action.payload || action.error.message;
       });
   },
 });

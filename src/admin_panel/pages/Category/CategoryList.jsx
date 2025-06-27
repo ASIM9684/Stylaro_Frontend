@@ -27,7 +27,7 @@ const CategoryList = () => {
 
   return (
     <div className="max-w-full w-full mx-auto bg-white shadow rounded-xl p-6 mt-6">
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
         <h2 className="text-2xl font-bold">Categories</h2>
            <div className="flex items-center gap-2 w-full md:w-auto">
         <div className="relative w-full md:w-64">

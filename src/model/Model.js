@@ -1,25 +1,27 @@
 import axios from "axios";
 import { showErrorToast, showSuccessToast } from "../utlis/toast";
+import { jwtDecode } from "jwt-decode";
 
 const apikey = "http://localhost:8000";
 
-async function addApi(data, route) {
+async function addApi(data, route, navigate) {
   try {
-    const response = await axios.post(`${apikey}/${route}`, data);
+    const response = await axios.post(`${apikey}/${route}`, data, {
+      headers: getAuthHeader(),
+    });
 
-    if (response.status === 201) {
-      showSuccessToast(response.data.message);
-      return true;
-    }
-    if (response.status === 200) {
+    if (response.status === 201 || response.status === 200) {
       showSuccessToast(response.data.message);
       return true;
     }
   } catch (error) {
     console.error("Error adding:", error);
 
-    if (error.response && error.response.status === 400) {
+    if (error.response?.status === 400) {
       showErrorToast(error.response.data.message);
+    } else if (error.response?.status === 401) {
+      showErrorToast(error.response.data.message);
+      if (navigate) navigate("/");
     } else {
       showErrorToast("Something went wrong");
     }
@@ -27,9 +29,12 @@ async function addApi(data, route) {
     return false;
   }
 }
-async function UpdateApi(data, route, id) {
+
+async function UpdateApi(data, route, id, navigate) {
   try {
-    const response = await axios.put(`${apikey}/${route}/${id}`, data);
+    const response = await axios.put(`${apikey}/${route}/${id}`, data, {
+      headers: getAuthHeader(),
+    });
 
     if (response.status === 200) {
       showSuccessToast(response.data.message);
@@ -40,6 +45,9 @@ async function UpdateApi(data, route, id) {
 
     if (error.response && error.response.status === 400) {
       showErrorToast(error.response.data.message);
+    } else if (error.response?.status === 401) {
+      showErrorToast(error.response.data.message);
+      if (navigate) navigate("/");
     } else {
       showErrorToast("Something went wrong");
     }
@@ -70,7 +78,10 @@ async function getApi(route, id) {
 
 async function authapi(route, data) {
   try {
-    const response = await axios.post(`${apikey}/${route}`, data);
+    const response = await axios.post(`${apikey}/${route}`, data, {
+      headers: getAuthHeader(),
+    });
+
     if (response.status === 201 || response.status === 200) {
       showSuccessToast(response.data.message);
       localStorage.setItem("token", response.data.token);
@@ -89,4 +100,20 @@ async function authapi(route, data) {
   }
 }
 
-export { addApi, UpdateApi, getApi,authapi };
+const getUserFromToken = () => {
+  try {
+    const token = localStorage.getItem("token");
+    if (!token) return null;
+    const decoded = jwtDecode(token);
+    return decoded;
+  } catch (error) {
+    console.error("Invalid token", error);
+    return null;
+  }
+};
+const getAuthHeader = () => {
+  const token = localStorage.getItem("token");
+  return token ? { Authorization: `Bearer ${token}` } : {};
+};
+
+export { addApi, UpdateApi, getApi, authapi, getUserFromToken, getAuthHeader };

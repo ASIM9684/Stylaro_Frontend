@@ -19,7 +19,7 @@ const UpdateColor = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = { name };
-    const success = await UpdateApi(data, "updateColor", Color._id);
+    const success = await UpdateApi(data, "updateColor", Color._id,navigate);
 
     if (success) {
       setName("");

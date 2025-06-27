@@ -62,7 +62,7 @@ const AddProduct = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const success = await addApi(formData, "add-product");
+    const success = await addApi(formData, "add-product",navigate);
 
     if (success) {
       setFormData({

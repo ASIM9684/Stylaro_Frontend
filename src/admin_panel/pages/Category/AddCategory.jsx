@@ -12,7 +12,7 @@ const AddCategory = () => {
     e.preventDefault();
 
     const data = { name };
-    const success = await addApi(data, "add-category");
+    const success = await addApi(data, "add-category",navigate);
 
     if (success) {
       setName("");

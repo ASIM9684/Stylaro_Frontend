@@ -5,9 +5,15 @@ const API_URL = "http://localhost:8000/categories";
 
 export const fetchCategories = createAsyncThunk(
   "category/fetchAll",
-  async () => {
-    const response = await axios.get(API_URL);
-    return response.data;
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(API_URL);
+      return response.data;
+    } catch (error) {
+      const message =
+        error.response?.data?.message || error.message || "Unknown error";
+      return rejectWithValue(message);
+    }
   },
   {
     condition: (_, { getState }) => {
@@ -41,7 +47,7 @@ const categorySlice = createSlice({
       })
       .addCase(fetchCategories.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message;
+        state.error = action.payload || action.error.message;
       });
   },
 });

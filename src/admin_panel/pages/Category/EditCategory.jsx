@@ -19,7 +19,7 @@ const UpdateCategory = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = { name };
-    const success = await UpdateApi(data, "updateCategory", category._id);
+    const success = await UpdateApi(data, "updateCategory", category._id,navigate);
 
     if (success) {
       setName("");
