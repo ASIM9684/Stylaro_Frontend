@@ -5,12 +5,14 @@ import { fetchCategories } from "../../../redux/slice/categorySlice";
 import { fetchColors } from "../../../redux/slice/colorSlice";
 import { clearproducts } from "../../../redux/slice/productSlice";
 import { useNavigate } from "react-router-dom";
+import { showErrorToast } from "../../../utlis/toast";
 
 const AddProduct = () => {
   const dispatch = useDispatch();
   const { categories } = useSelector((state) => state.category);
   const { Colors } = useSelector((state) => state.color);
   const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     name: "",
     color: "",
@@ -18,7 +20,13 @@ const AddProduct = () => {
     price: "",
     gender: "",
     image: "",
+    quantity: "",
+    rating: "",
+    discount: "",
   });
+
+  const [imageFile, setImageFile] = useState(null); // raw file
+  const [previewUrl, setPreviewUrl] = useState(null); // for preview
   const [isUploading, setIsUploading] = useState(false);
 
   useEffect(() => {
@@ -26,32 +34,19 @@ const AddProduct = () => {
     dispatch(fetchColors());
   }, [dispatch]);
 
-  const handleImageUpload = async (e) => {
+  const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
-    setIsUploading(true);
+    const allowedTypes = ["image/jpeg", "image/jpg", "image/png"];
 
-    try {
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("upload_preset", "Stylaro");
-
-      const response = await fetch(
-        "https://api.cloudinary.com/v1_1/dylzc8c7j/image/upload",
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
-
-      const data = await response.json();
-      setFormData({ ...formData, image: data.secure_url });
-    } catch (error) {
-      console.error("Error uploading image:", error);
-    } finally {
-      setIsUploading(false);
+    if (!allowedTypes.includes(file.type)) {
+      showErrorToast("Only image files (jpeg, jpg, png) are allowed.");
+      return;
     }
+
+    setImageFile(file);
+    setPreviewUrl(URL.createObjectURL(file));
   };
 
   const handleChange = (e) => {
@@ -61,20 +56,56 @@ const AddProduct = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsUploading(true);
 
-    const success = await addApi(formData, "add-product",navigate);
+    try {
+      let imageUrl = "";
 
-    if (success) {
-      setFormData({
-        name: "",
-        color: "",
-        category: "",
-        price: "",
-        gender: "",
-        image: "",
-      });
-      dispatch(clearproducts());
-      navigate("/admin/ProductList");
+      // upload image only if a file is selected
+      if (imageFile) {
+        const imageData = new FormData();
+        imageData.append("file", imageFile);
+        imageData.append("upload_preset", "Stylaro");
+
+        const response = await fetch(
+          "https://api.cloudinary.com/v1_1/dylzc8c7j/image/upload",
+          {
+            method: "POST",
+            body: imageData,
+          }
+        );
+
+        const data = await response.json();
+        imageUrl = data.secure_url;
+      }
+
+      const success = await addApi(
+        { ...formData, image: imageUrl },
+        "add-product",
+        navigate
+      );
+
+      if (success) {
+        setFormData({
+          name: "",
+          color: "",
+          category: "",
+          price: "",
+          gender: "",
+          image: "",
+          quantity: "",
+          rating: "",
+          discount: "",
+        });
+        setImageFile(null);
+        setPreviewUrl(null);
+        dispatch(clearproducts());
+        navigate("/admin/ProductList");
+      }
+    } catch (error) {
+      console.error("Image upload failed:", error);
+    } finally {
+      setIsUploading(false);
     }
   };
 
@@ -109,6 +140,48 @@ const AddProduct = () => {
             onChange={handleChange}
             className="w-full border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
             placeholder="e.g., 1200"
+          />
+        </div>
+ <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Quantity
+          </label>
+          <input
+            type="number"
+            name="quantity"
+            value={formData.quantity}
+            required
+            onChange={handleChange}
+            className="w-full border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+            placeholder="e.g., 100"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Rating
+          </label>
+          <input
+            type="number"
+            name="rating"
+            value={formData.rating}
+            required
+            onChange={handleChange}
+            className="w-full border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+            placeholder="e.g., 4.5"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Discount
+          </label>
+          <input
+            type="number"
+            name="rating"
+            value={formData.discount}
+            required
+            onChange={handleChange}
+            className="w-full border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+            placeholder="e.g., 10"
           />
         </div>
 
@@ -177,7 +250,7 @@ const AddProduct = () => {
           <input
             type="file"
             accept="image/*"
-            onChange={handleImageUpload}
+            onChange={handleImageChange}
             className="w-full text-sm text-gray-500
               file:mr-4 file:py-2 file:px-4
               file:rounded-md file:border-0
@@ -185,13 +258,10 @@ const AddProduct = () => {
               file:bg-green-50 file:text-green-700
               hover:file:bg-green-100"
           />
-          {isUploading && (
-            <p className="text-sm text-gray-500">Uploading image...</p>
-          )}
-          {formData.image && (
+          {previewUrl && (
             <div className="mt-2">
               <img
-                src={formData.image}
+                src={previewUrl}
                 alt="Preview"
                 className="h-20 w-20 object-cover rounded-md"
               />

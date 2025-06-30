@@ -18,6 +18,7 @@ import AddProduct from "./admin_panel/pages/Product/AddProduct";
 import ProductList from "./admin_panel/pages/Product/ProductList";
 import EditProduct from "./admin_panel/pages/Product/EditProduct";
 import ComplainList from "./admin_panel/pages/Complain/ComplainList";
+import ProfilePage from "./pages/ProfilePage";
 
 export default function App() {
   return (
@@ -64,6 +65,15 @@ export default function App() {
             </Layout>
           }
         />
+        <Route
+          path="/profile"
+          element={
+            <Layout>
+              <ProfilePage />{" "}
+            </Layout>
+          }
+        />
+
         <Route
           path="/admin/dashboard"
           element={
@@ -147,7 +157,7 @@ export default function App() {
             </LayoutAdmin>
           }
         />
-                <Route
+        <Route
           path="/admin/ComplainList"
           element={
             <LayoutAdmin>

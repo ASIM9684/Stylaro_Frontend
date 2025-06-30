@@ -1,11 +1,82 @@
 import React, { useState, useEffect } from "react";
-import { ArrowUp, ArrowDown, FilterX } from "lucide-react";
+import { ArrowUp, ArrowDown, FilterX, Heart, Star, ShoppingBag, ChevronDown, X } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCategories } from "../redux/slice/categorySlice";
 import { fetchColors } from "../redux/slice/colorSlice";
 import { fetchproducts } from "../redux/slice/productSlice";
 
+
 const genderOptions = ["Male", "Female", "Unisex"];
+
+const ProductCard = ({ product, onAddToCart }) => {
+  const [isHovered, setIsHovered] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  return (
+    <div 
+      className="bg-white rounded-xl shadow-sm overflow-hidden transition-all duration-300 hover:shadow-md group border border-gray-100"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <div className="relative aspect-[3/4] bg-gray-50">
+        <img
+          src={product.image}
+          alt={product.name}
+          className="w-full h-full object-fill transition-transform duration-500 group-hover:scale-105"
+        />
+        <div className={`absolute inset-0 bg-black/10 flex items-center justify-center transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`}>
+          <button 
+            onClick={() => onAddToCart(product)}
+            className="bg-white text-black px-6 py-2 rounded-full font-medium flex items-center gap-2 hover:bg-gray-100 transition-colors shadow-md"
+          >
+            <ShoppingBag size={16} /> Add to Cart
+          </button>
+        </div>
+        <button
+          onClick={() => setIsFavorite(!isFavorite)}
+          className="absolute top-3 right-3 bg-white/80 p-2 rounded-full hover:scale-110 transition-all"
+        >
+          <Heart
+            size={20}
+            className="transition-colors"
+            stroke="currentColor"
+            strokeWidth={2}
+            fill={isFavorite ? "currentColor" : "none"}
+            color={isFavorite ? "#ef4444" : "#6b7280"}
+          />
+        </button>
+        {product.discount && (
+          <div className="absolute top-3 left-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
+            -{product.discount}%
+          </div>
+        )}
+      </div>
+      <div className="p-4">
+        <h3 className="text-lg font-semibold text-gray-900 mb-1 truncate">{product.name}</h3>
+        <div className="flex items-center gap-1 mb-2">
+          <Star size={16} className="fill-yellow-400 text-yellow-400" />
+          <span className="text-sm text-gray-600">{product.rating || '4.5'}</span>
+        </div>
+        <div className="flex items-center gap-2 mb-2">
+          <span className="w-4 h-4 rounded-full border border-gray-200" style={{ backgroundColor: product.color.toLowerCase() }} />
+          <span className="text-sm text-gray-600">{product.color}</span>
+        </div>
+        <div className="flex justify-between items-center">
+          <div className="flex flex-col">
+            <span className="text-sm text-gray-500">{product.gender}</span>
+            <span className="text-sm text-gray-500">{product.category}</span>
+          </div>
+          <div className="text-right">
+            <p className="text-lg font-bold text-gray-900">Rs {product.price.toLocaleString()}</p>
+            {product.originalPrice && (
+              <p className="text-sm text-gray-400 line-through">Rs {product.originalPrice.toLocaleString()}</p>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const Product = () => {
   const [sortOption, setSortOption] = useState("lowToHigh");
@@ -277,54 +348,13 @@ const Product = () => {
                 </div>
               </div>
             ) : filteredProducts && filteredProducts.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
                 {filteredProducts.map((product) => (
-                  <div
-                    key={product._id}
-                    className="bg-white p-3 border border-gray-200 rounded-2xl shadow-sm hover:shadow-lg transition-all overflow-hidden group"
-                  >
-                    <div className="relative rounded-2xl w-full aspect-[3/4] bg-gray-100 overflow-hidden">
-                      <img
-                        src={product.image}
-                        alt={product.name}
-                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                    </div>
-                    <div className="p-5 space-y-2">
-                      <h2 className="text-xl font-semibold text-gray-900 truncate">
-                        {product.name}
-                      </h2>
-                      <div className="flex items-center gap-2">
-                        <span className="text-sm text-gray-500">Color:</span>
-                        <span
-                          className="w-4 h-4 rounded-full border border-gray-200"
-                          style={{
-                            backgroundColor: product.color.toLowerCase(),
-                          }}
-                        />
-                        <span className="text-sm text-gray-700">
-                          {product.color}
-                        </span>
-                      </div>
-                      <div className="flex justify-between items-center pt-2">
-                        <div className="text-sm text-gray-500 space-y-1">
-                          <p>{product.gender}</p>
-                          <p>{product.category}</p>
-                        </div>
-                        <p className="text-lg font-bold text-green-600">
-                          Rs {product.price.toLocaleString()}
-                        </p>
-                      </div>
-
-                      <button
-                        onClick={() => handleAddToCart(product)}
-                        className="mt-4 w-full bg-green-600 text-white text-sm font-semibold py-2 px-4 rounded-xl hover:bg-green-700 transition-all"
-                      >
-                        Add to Cart
-                      </button>
-                    </div>
-                  </div>
+                 <ProductCard 
+                    key={product._id} 
+                    product={product} 
+                    onAddToCart={handleAddToCart} 
+                  />
                 ))}
               </div>
             ) : (

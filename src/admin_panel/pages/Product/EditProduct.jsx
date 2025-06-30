@@ -20,6 +20,9 @@ const EditProduct = () => {
     price: "",
     gender: "",
     image: "",
+    quantity: "",
+    rating: "",
+    discount: "",
   });
   const [isUploading, setIsUploading] = useState(false);
 
@@ -34,6 +37,9 @@ const EditProduct = () => {
         price: response.price || "",
         gender: response.gender || "",
         image: response.image || "",
+        quantity: response.quantity || "",
+        rating: response.rating || "",
+        discount: response.discount || "",
       });
     };
     fetch();
@@ -89,6 +95,9 @@ const EditProduct = () => {
         price: "",
         gender: "",
         image: "",
+        rating: "",
+        quantity: "",
+        discount: "",
       });
       dispatch(clearproducts());
       navigate("/admin/ProductList");
@@ -126,6 +135,48 @@ const EditProduct = () => {
             onChange={handleChange}
             className="w-full border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
             placeholder="e.g., 1200"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Quantity
+          </label>
+          <input
+            type="number"
+            name="quantity"
+            value={formData.quantity}
+            required
+            onChange={handleChange}
+            className="w-full border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+            placeholder="e.g., 100"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Rating
+          </label>
+          <input
+            type="number"
+            name="rating"
+            value={formData.rating}
+            required
+            onChange={handleChange}
+            className="w-full border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+            placeholder="e.g., 4.5"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Discount
+          </label>
+          <input
+            type="number"
+            name="rating"
+            value={formData.discount}
+            required
+            onChange={handleChange}
+            className="w-full border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+            placeholder="e.g., 10"
           />
         </div>
 

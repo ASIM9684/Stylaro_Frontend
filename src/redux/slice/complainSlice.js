@@ -2,13 +2,13 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { getAuthHeader } from "../../model/Model";
 
-const API_URL = "http://localhost:8000/complain";
+const API_URL = "http://192.168.18.15:8000/complain";
 
 export const fetchcomplains = createAsyncThunk(
   "complain/fetchAll",
   async (id = null, { rejectWithValue }) => {
     try {
-      const endpoint = id ? "http://localhost:8000/getComplainsbyUser" : API_URL;
+      const endpoint = id ? "http://192.168.18.15:8000/getComplainsbyUser" : API_URL;
       const response =  await axios.get(endpoint, {
             headers: getAuthHeader(),
           })

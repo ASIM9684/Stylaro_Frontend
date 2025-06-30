@@ -15,7 +15,15 @@ const AuthPage = () => {
     confirmPassword: "",
   });
 
-  const toggleMode = () => setIsLogin(!isLogin);
+  const toggleMode = () => {
+    setIsLogin(!isLogin);
+    setFormData({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  })
+  };
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });

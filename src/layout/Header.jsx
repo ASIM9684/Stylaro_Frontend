@@ -1,21 +1,38 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
-import { Link } from "react-router-dom";
-
-const navItems = [
-  { name: "Home", path: "/" },
-  { name: "Product", path: "/products" },
-  { name: "About", path: "/about" },
-  { name: "Complain", path: "/complain" },
-  { name: "Login", path: "/login" },
-];
+import { Link, useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
-
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate("")
   const toggleMobileMenu = () => setIsOpen((prev) => !prev);
-
   const closeMobileMenu = () => setIsOpen(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        const decoded = jwtDecode(token);
+        if (decoded?._id) {
+          setIsLoggedIn(true);
+        }
+      } catch (err) {
+        setIsLoggedIn(false);
+      }
+    }
+  }, [navigate]);
+
+  const navItems = [
+    { name: "Home", path: "/" },
+    { name: "Product", path: "/products" },
+    { name: "About", path: "/about" },
+    { name: "Complain", path: "/complain" },
+    isLoggedIn
+      ? { name: "Profile", path: "/profile" }
+      : { name: "Login", path: "/login" },
+  ];
 
   return (
     <header className="sticky top-0 z-50 bg-white shadow-md">
@@ -39,7 +56,10 @@ const Header = () => {
         </nav>
 
         {/* Mobile Toggle */}
-        <div className="md:hidden text-green-600 cursor-pointer" onClick={toggleMobileMenu}>
+        <div
+          className="md:hidden text-green-600 cursor-pointer"
+          onClick={toggleMobileMenu}
+        >
           {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </div>
       </div>

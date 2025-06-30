@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const API_URL = "http://localhost:8000/colors";
+const API_URL = "http://192.168.18.15:8000/colors";
 
 export const fetchColors = createAsyncThunk(
   "color/fetchAll",

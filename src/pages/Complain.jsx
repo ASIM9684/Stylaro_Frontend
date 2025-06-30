@@ -3,6 +3,7 @@ import { addApi, getUserFromToken } from "../model/Model";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { clearcomplains, fetchcomplains } from "../redux/slice/complainSlice";
+import { showErrorToast } from "../utlis/toast";
 
 const Complain = () => {
   const [form, setForm] = useState({ subject: "", message: "" });
@@ -30,7 +31,12 @@ const Complain = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-
+    const user = await getUserFromToken();
+    if (user == null) {
+      showErrorToast("Must Login For Complain");
+      setLoading(false);
+      return;
+    }
     try {
       const res = await addApi(form, "add-complain", navigate);
       if (res === true) {
@@ -114,7 +120,9 @@ const Complain = () => {
                   <div className="flex justify-between items-center">
                     <p className="font-semibold text-green-600">
                       {" "}
-                      <span className="font-semibold text-black">Subject: </span>
+                      <span className="font-semibold text-black">
+                        Subject:{" "}
+                      </span>
                       {c.subject}
                     </p>
                     <span className="text-xs text-gray-500">

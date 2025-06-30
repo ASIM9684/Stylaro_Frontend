@@ -1,10 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const API_URL = "http://192.168.18.15:8000/categories";
+const API_URL = "http://192.168.18.15:8000/user";
 
-export const fetchCategories = createAsyncThunk(
-  "category/fetchAll",
+export const fetchuser = createAsyncThunk(
+  "user/fetchAll",
   async (_, { rejectWithValue }) => {
     try {
       const response = await axios.get(API_URL);
@@ -17,40 +17,40 @@ export const fetchCategories = createAsyncThunk(
   },
   {
     condition: (_, { getState }) => {
-      const { category } = getState();
-      return category.categories.length === 0;
+      const { user } = getState();
+      return user.user.length === 0;
     },
   }
 );
 
-const categorySlice = createSlice({
-  name: "category",
+const userSlice = createSlice({
+  name: "user",
   initialState: {
-    categories: [],
+    user: [],
     loading: false,
     error: null,
   },
   reducers: {
-    clearCategories: (state) => {
-      state.categories = [];
+    clearuser: (state) => {
+      state.user = [];
     },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchCategories.pending, (state) => {
+      .addCase(fetchuser.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchCategories.fulfilled, (state, action) => {
+      .addCase(fetchuser.fulfilled, (state, action) => {
         state.loading = false;
-        state.categories = action.payload;
+        state.user = action.payload;
       })
-      .addCase(fetchCategories.rejected, (state, action) => {
+      .addCase(fetchuser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || action.error.message;
       });
   },
 });
 
-export const { clearCategories } = categorySlice.actions;
-export default categorySlice.reducer;
+export const { clearuser } = userSlice.actions;
+export default userSlice.reducer;

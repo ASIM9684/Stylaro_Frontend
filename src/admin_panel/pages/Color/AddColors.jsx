@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import { addApi } from "../../../model/Model";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { clearColors } from "../../../redux/slice/colorSlice";
 
 const AddColors = () => {
   const [name, setName] = useState("");
   const navigate = useNavigate();
+  const dispatch = useDispatch()
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -13,6 +16,7 @@ const AddColors = () => {
 
     if (success) {
       setName("");
+      dispatch(clearColors())
       navigate("/admin/ColorList")
     }
   };

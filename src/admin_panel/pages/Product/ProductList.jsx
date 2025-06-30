@@ -64,6 +64,9 @@ const ProductList = () => {
               <th className="px-4 py-2 border-b">Category</th>
               <th className="px-4 py-2 border-b">Gender</th>
               <th className="px-4 py-2 border-b">Color</th>
+              <th className="px-4 py-2 border-b">Quantity</th>
+              <th className="px-4 py-2 border-b">Discount</th>
+              <th className="px-4 py-2 border-b">Rating</th>
               <th className="px-4 py-2 border-b">Action</th>
             </tr>
           </thead>
@@ -76,6 +79,9 @@ const ProductList = () => {
                 <td className="px-4 py-3 border-b">{prod.category}</td>
                 <td className="px-4 py-3 border-b">{prod.gender}</td>
                 <td className="px-4 py-3 border-b">{prod.color}</td>
+                <td className="px-4 py-3 border-b">{prod.quantity}</td>
+                <td className="px-4 py-3 border-b">{prod.discount ? `${prod.discount}%` : "0%"}</td>
+                <td className="px-4 py-3 border-b">{prod.rating}</td>
                 <td className="px-4 py-3 border-b">
                   <button
                     onClick={() => handleUpdate(prod._id)}

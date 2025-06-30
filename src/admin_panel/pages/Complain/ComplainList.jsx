@@ -12,7 +12,6 @@ const ComplainList = () => {
   const { complain = [], loadingcomplain, errorcomplain,fetchedById } = useSelector((state) => state.complain);
 
   useEffect(() => {
-    console.log(fetchedById);
     
     if(!fetchedById){
       dispatch(clearcomplains());

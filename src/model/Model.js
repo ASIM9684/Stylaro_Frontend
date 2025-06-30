@@ -2,10 +2,11 @@ import axios from "axios";
 import { showErrorToast, showSuccessToast } from "../utlis/toast";
 import { jwtDecode } from "jwt-decode";
 
-const apikey = "http://localhost:8000";
+const apikey = "http://192.168.18.15:8000";
 
 async function addApi(data, route, navigate) {
   try {
+    
     const response = await axios.post(`${apikey}/${route}`, data, {
       headers: getAuthHeader(),
     });
