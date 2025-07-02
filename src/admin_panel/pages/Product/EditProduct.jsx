@@ -171,7 +171,7 @@ const EditProduct = () => {
           </label>
           <input
             type="number"
-            name="rating"
+            name="discount"
             value={formData.discount}
             required
             onChange={handleChange}

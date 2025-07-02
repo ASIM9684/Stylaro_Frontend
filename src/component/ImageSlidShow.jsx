@@ -1,14 +1,15 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useLayoutEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { motion } from "framer-motion";
 
 const slides = [
   {
-    img: "https://images.unsplash.com/photo-1540221652346-e5dd6b50f3e7?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y2xvdGhlc3xlbnwwfHwwfHx8MA%3D%3D",
+    img: "https://www.cato.org/sites/cato.org/files/styles/optimized/public/2023-11/fast-fashion2.jpeg?itok=qCMa7eGV",
     title: "Explore the Future",
     subtitle: "Discover innovation beyond limits.",
   },
   {
-    img: "https://www.cato.org/sites/cato.org/files/styles/optimized/public/2023-11/fast-fashion2.jpeg?itok=qCMa7eGV",
+    img: "https://www.highsnobiety.com/static-assets/dato/1682635705-how-to-care-for-clothes-02.jpg",
     title: "Seamless Experience",
     subtitle: "Design meets performance perfectly.",
   },
@@ -24,7 +25,7 @@ const ImageSlidShow = () => {
   const containerRef = useRef(null);
   const [width, setWidth] = useState(0);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (containerRef.current) {
       setWidth(containerRef.current.offsetWidth);
     }
@@ -42,9 +43,9 @@ const ImageSlidShow = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % slides.length);
-    }, 3000);
+    }, 5000);
     return () => clearInterval(interval);
-  }, []);
+  }, [slides.length]);
 
   const goToPrevious = () => {
     setCurrentIndex((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
@@ -55,22 +56,25 @@ const ImageSlidShow = () => {
   };
 
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
       ref={containerRef}
       className="relative w-full max-w-[1200px] h-64 md:h-[400px] mx-auto overflow-hidden rounded-2xl shadow-lg mt-10"
     >
       <div
-        className="flex transition-transform duration-700 ease-in-out"
+        className="flex transition-transform duration-700 ease-in-out will-change-transform"
         style={{
-          width: `${slides.length * width}px`,
           transform: `translateX(-${currentIndex * width}px)`,
+          width: `${slides.length * width}px`,
         }}
       >
         {slides.map((slide, index) => (
           <div
             key={index}
-            className="relative h-64 md:h-[400px]"
-            style={{ width: `${width}px`, flexShrink: 0 }}
+            className="relative h-64 md:h-[400px] flex-shrink-0"
+            style={{ width: `${width}px` }}
           >
             <img
               src={slide.img}
@@ -100,7 +104,7 @@ const ImageSlidShow = () => {
       >
         <ChevronRight className="w-6 h-6" />
       </button>
-    </div>
+    </motion.div>
   );
 };
 

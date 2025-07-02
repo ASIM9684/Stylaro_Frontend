@@ -1,82 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { ArrowUp, ArrowDown, FilterX, Heart, Star, ShoppingBag, ChevronDown, X } from "lucide-react";
+import { ArrowUp, ArrowDown, FilterX, Heart } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCategories } from "../redux/slice/categorySlice";
 import { fetchColors } from "../redux/slice/colorSlice";
 import { fetchproducts } from "../redux/slice/productSlice";
-
+import ProductCard from "../component/ProductCard";
+import { fetchFavorites, toggleFavorite } from "../redux/slice/favoriteSlice";
+import { motion, AnimatePresence } from "framer-motion";
 
 const genderOptions = ["Male", "Female", "Unisex"];
 
-const ProductCard = ({ product, onAddToCart }) => {
-  const [isHovered, setIsHovered] = useState(false);
-  const [isFavorite, setIsFavorite] = useState(false);
-
-  return (
-    <div 
-      className="bg-white rounded-xl shadow-sm overflow-hidden transition-all duration-300 hover:shadow-md group border border-gray-100"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      <div className="relative aspect-[3/4] bg-gray-50">
-        <img
-          src={product.image}
-          alt={product.name}
-          className="w-full h-full object-fill transition-transform duration-500 group-hover:scale-105"
-        />
-        <div className={`absolute inset-0 bg-black/10 flex items-center justify-center transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`}>
-          <button 
-            onClick={() => onAddToCart(product)}
-            className="bg-white text-black px-6 py-2 rounded-full font-medium flex items-center gap-2 hover:bg-gray-100 transition-colors shadow-md"
-          >
-            <ShoppingBag size={16} /> Add to Cart
-          </button>
-        </div>
-        <button
-          onClick={() => setIsFavorite(!isFavorite)}
-          className="absolute top-3 right-3 bg-white/80 p-2 rounded-full hover:scale-110 transition-all"
-        >
-          <Heart
-            size={20}
-            className="transition-colors"
-            stroke="currentColor"
-            strokeWidth={2}
-            fill={isFavorite ? "currentColor" : "none"}
-            color={isFavorite ? "#ef4444" : "#6b7280"}
-          />
-        </button>
-        {product.discount && (
-          <div className="absolute top-3 left-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
-            -{product.discount}%
-          </div>
-        )}
-      </div>
-      <div className="p-4">
-        <h3 className="text-lg font-semibold text-gray-900 mb-1 truncate">{product.name}</h3>
-        <div className="flex items-center gap-1 mb-2">
-          <Star size={16} className="fill-yellow-400 text-yellow-400" />
-          <span className="text-sm text-gray-600">{product.rating || '4.5'}</span>
-        </div>
-        <div className="flex items-center gap-2 mb-2">
-          <span className="w-4 h-4 rounded-full border border-gray-200" style={{ backgroundColor: product.color.toLowerCase() }} />
-          <span className="text-sm text-gray-600">{product.color}</span>
-        </div>
-        <div className="flex justify-between items-center">
-          <div className="flex flex-col">
-            <span className="text-sm text-gray-500">{product.gender}</span>
-            <span className="text-sm text-gray-500">{product.category}</span>
-          </div>
-          <div className="text-right">
-            <p className="text-lg font-bold text-gray-900">Rs {product.price.toLocaleString()}</p>
-            {product.originalPrice && (
-              <p className="text-sm text-gray-400 line-through">Rs {product.originalPrice.toLocaleString()}</p>
-            )}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
 
 const Product = () => {
   const [sortOption, setSortOption] = useState("lowToHigh");
@@ -84,18 +17,24 @@ const Product = () => {
   const [activeGender, setActiveGender] = useState("");
   const [activeCategory, setActiveCategory] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
-  
+  const { items: favoriteItems } = useSelector((state) => state.favorites);
   const { categories, loading, error } = useSelector((state) => state.category);
   const { Colors, loadingColor, errorColor } = useSelector((state) => state.color);
   const { product, loadingproduct, errorproduct } = useSelector((state) => state.product);
+  const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
   const dispatch = useDispatch();
-  
+
+
   useEffect(() => {
     dispatch(fetchCategories());
     dispatch(fetchColors());
     dispatch(fetchproducts());
+    dispatch(fetchFavorites());
   }, [dispatch]);
-  
+
+  const handleToggleFavorite = (productId) => {
+    dispatch(toggleFavorite({ productId }));
+  };
   useEffect(() => {
     if (product && product.length > 0) {
       let filtered = [...product];
@@ -119,19 +58,21 @@ const Product = () => {
         );
       }
 
+      if (showFavoritesOnly) {
+        filtered = filtered.filter(product => favoriteItems.includes(product._id));
+      }
+
       if (sortOption === "lowToHigh") {
         filtered.sort((a, b) => a.price - b.price);
       } else {
         filtered.sort((a, b) => b.price - a.price);
       }
-      
+
       setFilteredProducts(filtered);
     }
-  }, [sortOption, activeColor, activeGender, activeCategory, product]);
+  }, [sortOption, activeColor, activeGender, activeCategory, product, showFavoritesOnly, favoriteItems]);
 
-  const handleAddToCart = (product) => {
-    console.log("Added to cart:", product);
-  };
+
 
   return (
     <div className="min-h-screen py-10 px-4 sm:px-6 lg:px-8">
@@ -142,8 +83,27 @@ const Product = () => {
 
         <div className="flex flex-col lg:flex-row gap-10">
           {/* Sidebar */}
-          <div className="w-full lg:w-72 space-y-8">
+          <motion.div initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }} className="w-full lg:w-72 space-y-8">
             <div className="bg-gray-50 rounded-2xl shadow-md p-6 space-y-6 border border-gray-200">
+
+              <div>
+                <h3 className="text-sm font-semibold text-gray-600 uppercase tracking-wider mb-2">
+                  Favorites
+                </h3>
+                <button
+                  onClick={() => setShowFavoritesOnly(!showFavoritesOnly)}
+                  className={`w-full flex items-center justify-between px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    showFavoritesOnly
+                      ? "bg-pink-600 text-white"
+                      : "bg-gray-100 hover:bg-gray-200 text-gray-700"
+                  }`}
+                >
+                  <span>Show Favorites Only</span>
+                  <Heart className="w-4 h-4" fill={showFavoritesOnly ? "white" : "none"} />
+                </button>
+              </div>
               <div>
                 <h3 className="text-sm font-semibold text-gray-600 uppercase tracking-wider mb-2">
                   Sort by Price
@@ -151,22 +111,20 @@ const Product = () => {
                 <div className="space-y-2">
                   <button
                     onClick={() => setSortOption("lowToHigh")}
-                    className={`w-full flex items-center justify-between px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                      sortOption === "lowToHigh"
-                        ? "bg-green-600 text-white"
-                        : "bg-gray-100 hover:bg-gray-200 text-gray-700"
-                    }`}
+                    className={`w-full flex items-center justify-between px-4 py-2 rounded-lg text-sm font-medium transition-colors ${sortOption === "lowToHigh"
+                      ? "bg-green-600 text-white"
+                      : "bg-gray-100 hover:bg-gray-200 text-gray-700"
+                      }`}
                   >
                     <span>Low to High</span>
                     <ArrowUp className="w-4 h-4" />
                   </button>
                   <button
                     onClick={() => setSortOption("highToLow")}
-                    className={`w-full flex items-center justify-between px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                      sortOption === "highToLow"
-                        ? "bg-green-600 text-white"
-                        : "bg-gray-100 hover:bg-gray-200 text-gray-700"
-                    }`}
+                    className={`w-full flex items-center justify-between px-4 py-2 rounded-lg text-sm font-medium transition-colors ${sortOption === "highToLow"
+                      ? "bg-green-600 text-white"
+                      : "bg-gray-100 hover:bg-gray-200 text-gray-700"
+                      }`}
                   >
                     <span>High to Low</span>
                     <ArrowDown className="w-4 h-4" />
@@ -187,15 +145,14 @@ const Product = () => {
                     Colors.map((color) => (
                       <button
                         key={color._id}
-                        className={`w-8 h-8 rounded-full border-2 transition-all transform hover:scale-110 ${
-                          activeColor === color.name
-                            ? "ring-2 ring-offset-2 ring-green-600 scale-110 border-white"
-                            : "border-gray-300"
-                        }`}
+                        className={`w-8 h-8 rounded-full border-2 transition-all transform hover:scale-110 ${activeColor === color.name
+                          ? "ring-2 ring-offset-2 ring-green-600 scale-110 border-white"
+                          : "border-gray-300"
+                          }`}
                         style={{ backgroundColor: color.name.toLowerCase() }}
                         onClick={() =>
                           setActiveColor(
-                            activeColor === color.name ? "" : color.name
+                            activeColor == color.name ? "" : color.name
                           )
                         }
                         title={color.name}
@@ -218,11 +175,10 @@ const Product = () => {
                       onClick={() =>
                         setActiveGender(activeGender === gender ? "" : gender)
                       }
-                      className={`w-full text-left px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                        activeGender === gender
-                          ? "bg-green-600 text-white"
-                          : "bg-gray-100 hover:bg-gray-200 text-gray-700"
-                      }`}
+                      className={`w-full text-left px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeGender === gender
+                        ? "bg-green-600 text-white"
+                        : "bg-gray-100 hover:bg-gray-200 text-gray-700"
+                        }`}
                     >
                       {gender}
                     </button>
@@ -250,11 +206,10 @@ const Product = () => {
                               : category.name
                           )
                         }
-                        className={`w-full text-left px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                          activeCategory === category.name
-                            ? "bg-green-600 text-white"
-                            : "bg-gray-100 hover:bg-gray-200 text-gray-700"
-                        }`}
+                        className={`w-full text-left px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeCategory === category.name
+                          ? "bg-green-600 text-white"
+                          : "bg-gray-100 hover:bg-gray-200 text-gray-700"
+                          }`}
                       >
                         {category.name}
                       </button>
@@ -272,15 +227,16 @@ const Product = () => {
                 setActiveColor("");
                 setActiveGender("");
                 setActiveCategory("");
+                setShowFavoritesOnly(false)
               }}
             >
               <FilterX className="w-4 h-4" /> Clear Filters
             </button>
-          </div>
+          </motion.div>
 
           {/* Product Grid */}
           <div className="flex-1">
-            {(activeColor || activeGender || activeCategory) && (
+            {(activeColor || activeGender || activeCategory || showFavoritesOnly) && (
               <div className="mb-6 flex flex-wrap gap-2">
                 {activeColor && (
                   <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
@@ -309,6 +265,17 @@ const Product = () => {
                     Category: {activeCategory}
                     <button
                       onClick={() => setActiveCategory("")}
+                      className="ml-1.5 inline-flex items-center justify-center w-4 h-4 rounded-full text-green-600 hover:bg-green-200"
+                    >
+                      ×
+                    </button>
+                  </span>
+                )}
+                {showFavoritesOnly && (
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                    Favorites: only
+                    <button
+                      onClick={() => setShowFavoritesOnly(false)}
                       className="ml-1.5 inline-flex items-center justify-center w-4 h-4 rounded-full text-green-600 hover:bg-green-200"
                     >
                       ×
@@ -350,10 +317,11 @@ const Product = () => {
             ) : filteredProducts && filteredProducts.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
                 {filteredProducts.map((product) => (
-                 <ProductCard 
-                    key={product._id} 
-                    product={product} 
-                    onAddToCart={handleAddToCart} 
+                  <ProductCard
+                    key={product._id}
+                    product={product}
+                    isFavorite={favoriteItems.includes(product._id)}
+                    onToggleFavorite={() => handleToggleFavorite(product._id)}
                   />
                 ))}
               </div>

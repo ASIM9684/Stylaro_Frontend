@@ -19,6 +19,7 @@ import ProductList from "./admin_panel/pages/Product/ProductList";
 import EditProduct from "./admin_panel/pages/Product/EditProduct";
 import ComplainList from "./admin_panel/pages/Complain/ComplainList";
 import ProfilePage from "./pages/ProfilePage";
+import CartPage from "./pages/CartPage";
 
 export default function App() {
   return (
@@ -54,6 +55,14 @@ export default function App() {
           element={
             <Layout>
               <About />
+            </Layout>
+          }
+        />
+        <Route
+          path="/cartPage"
+          element={
+            <Layout>
+              <CartPage />
             </Layout>
           }
         />

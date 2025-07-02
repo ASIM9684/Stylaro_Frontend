@@ -29,9 +29,15 @@ const Header = () => {
     { name: "Product", path: "/products" },
     { name: "About", path: "/about" },
     { name: "Complain", path: "/complain" },
-    isLoggedIn
-      ? { name: "Profile", path: "/profile" }
-      : { name: "Login", path: "/login" },
+    ...(isLoggedIn
+      ? [
+        { name: "Cart", path: "/cartPage" },
+          { name: "Profile", path: "/profile" },
+        ]
+      : [
+          { name: "Login", path: "/login" }
+        ]
+    ),
   ];
 
   return (

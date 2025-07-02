@@ -136,7 +136,7 @@ const ProfilePage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 py-10 px-4 flex justify-center">
+    <div className=" bg-gray-100 py-10 px-4 flex justify-center">
       <div className="bg-white shadow-lg rounded-xl p-8 w-full max-w-md space-y-6">
         <h2 className="text-2xl font-bold text-center text-gray-800">
           {editMode ? "Edit Profile" : "Your Profile"}
