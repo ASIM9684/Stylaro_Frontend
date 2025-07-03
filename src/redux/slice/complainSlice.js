@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { getAuthHeader } from "../../model/Model";
+import { showErrorToast } from "../../utlis/toast";
 
 const API_URL = "http://192.168.18.15:8000/complain";
 
@@ -9,14 +10,24 @@ export const fetchcomplains = createAsyncThunk(
   async (id = null, { rejectWithValue }) => {
     try {
       const endpoint = id ? "http://192.168.18.15:8000/getComplainsbyUser" : API_URL;
-      const response =  await axios.get(endpoint, {
-            headers: getAuthHeader(),
-          })
+      const response = await axios.get(endpoint, {
+        headers: getAuthHeader(),
+      })
       return {
         data: response.data,
         fetchedById: Boolean(id),
       };
     } catch (error) {
+      if (error.response?.status === 401) {
+        showErrorToast(error.response.data.message);
+        localStorage.removeItem("token");
+        localStorage.removeItem("cartItems");
+
+        setTimeout(() => {
+          window.location.reload();
+        }, 5000);
+      }
+
       const message =
         error.response?.data?.message || error.message || "Unknown error";
       return rejectWithValue(message);

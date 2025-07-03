@@ -74,7 +74,7 @@ const ProductList = () => {
             {filteredProduct.map((prod, index) => (
               <tr key={prod._id} className="hover:bg-gray-50 transition">
                 <td className="px-4 py-3 border-b">{prod.name}</td>
-                <td className="px-4 py-3 border-b">{prod.price}</td>
+                <td className="px-4 py-3 border-b">${prod.price}</td>
                 <td className="px-4 py-3 border-b"><img src={prod.image} width={100} height={100} /></td>
                 <td className="px-4 py-3 border-b">{prod.category}</td>
                 <td className="px-4 py-3 border-b">{prod.gender}</td>

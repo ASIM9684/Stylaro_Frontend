@@ -18,9 +18,14 @@ import AddProduct from "./admin_panel/pages/Product/AddProduct";
 import ProductList from "./admin_panel/pages/Product/ProductList";
 import EditProduct from "./admin_panel/pages/Product/EditProduct";
 import ComplainList from "./admin_panel/pages/Complain/ComplainList";
+import UserList from "./admin_panel/pages/User/UserList";
 import ProfilePage from "./pages/ProfilePage";
 import CartPage from "./pages/CartPage";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+import "./utlis/axiosInterceptor";
 
+const stripePromise = loadStripe("pk_test_51RdTvkPTy0kI4EYZ4CJfzjJ0Jxy0omtDT9pLGSMonxX7Sxx78ZdxWmIYAqeQFqVVpX8MnRci9dGb50xb70HC7x16001nraHEND");
 export default function App() {
   return (
     <BrowserRouter>
@@ -62,7 +67,9 @@ export default function App() {
           path="/cartPage"
           element={
             <Layout>
-              <CartPage />
+              <Elements stripe={stripePromise}>
+                <CartPage />
+              </Elements>
             </Layout>
           }
         />
@@ -171,6 +178,14 @@ export default function App() {
           element={
             <LayoutAdmin>
               <ComplainList />
+            </LayoutAdmin>
+          }
+        />
+        <Route
+          path="/admin/UserList"
+          element={
+            <LayoutAdmin>
+              <UserList />
             </LayoutAdmin>
           }
         />

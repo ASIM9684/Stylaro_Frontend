@@ -1,13 +1,18 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { getAuthHeader } from "../../model/Model";
 
-const API_URL = "http://192.168.18.15:8000/user";
+const API_URL = "http://192.168.18.15:8000/getUser";
 
 export const fetchuser = createAsyncThunk(
   "user/fetchAll",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get(API_URL);
+      const response = await axios.get(API_URL,
+        {
+          headers : getAuthHeader()
+        }
+      );
       return response.data;
     } catch (error) {
       const message =

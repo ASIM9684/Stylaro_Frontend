@@ -261,6 +261,7 @@ const ProfilePage = () => {
                 <button
                   onClick={() => {
                     localStorage.removeItem("token");
+                    localStorage.removeItem("cartItems");
                     window.location.reload();
                   }}
                   className="flex-1 bg-gray-400 font-semibold text-black py-2 rounded-md hover:bg-gray-500"

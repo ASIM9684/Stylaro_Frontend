@@ -1,11 +1,10 @@
-// Sidebar.js
 import { LayoutDashboard, Users, Package, LogOut, X, Tag, Palette, AlertCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Sidebar = ({ isOpen, toggleSidebar }) => {
   const navItems = [
     { label: "Dashboard", icon: LayoutDashboard, path: "/admin/dashboard" },
-    { label: "Users", icon: Users, path: "/admin/users" },
+    { label: "Users", icon: Users, path: "/admin/UserList" },
     { label: "Products", icon: Package, path: "/admin/ProductList" },
     { label: "Category", icon: Tag, path: "/admin/CategoryList" },
     { label: "Color", icon: Palette, path: "/admin/ColorList" },

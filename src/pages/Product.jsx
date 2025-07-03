@@ -6,7 +6,7 @@ import { fetchColors } from "../redux/slice/colorSlice";
 import { fetchproducts } from "../redux/slice/productSlice";
 import ProductCard from "../component/ProductCard";
 import { fetchFavorites, toggleFavorite } from "../redux/slice/favoriteSlice";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 const genderOptions = ["Male", "Female", "Unisex"];
 

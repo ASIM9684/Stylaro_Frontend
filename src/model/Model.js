@@ -6,7 +6,7 @@ const apikey = "http://192.168.18.15:8000";
 
 async function addApi(data, route, navigate) {
   try {
-    
+
     const response = await axios.post(`${apikey}/${route}`, data, {
       headers: getAuthHeader(),
     });
@@ -22,6 +22,8 @@ async function addApi(data, route, navigate) {
       showErrorToast(error.response.data.message);
     } else if (error.response?.status === 401) {
       showErrorToast(error.response.data.message);
+      localStorage.removeItem("token");
+      localStorage.removeItem("cartItems");
       if (navigate) navigate("/");
     } else {
       showErrorToast("Something went wrong");
@@ -48,6 +50,8 @@ async function UpdateApi(data, route, id, navigate) {
       showErrorToast(error.response.data.message);
     } else if (error.response?.status === 401) {
       showErrorToast(error.response.data.message);
+      localStorage.removeItem("token");
+      localStorage.removeItem("cartItems");
       if (navigate) navigate("/");
     } else {
       showErrorToast("Something went wrong");
@@ -59,7 +63,9 @@ async function UpdateApi(data, route, id, navigate) {
 
 async function getApi(route, id) {
   try {
-    const response = await axios.get(`${apikey}/${route}/${id}`);
+    const response = await axios.get(`${apikey}/${route}/${id}`,
+      {headers : getAuthHeader()}
+    );
 
     if (response.status === 200) {
       return response.data;
@@ -69,7 +75,8 @@ async function getApi(route, id) {
 
     if (error.response && error.response.status === 400) {
       showErrorToast(error.response.data.message);
-    } else {
+    }
+     else {
       showErrorToast("Something went wrong");
     }
 
@@ -94,7 +101,7 @@ async function authapi(route, data) {
     if (error.response && error.response.status === 400) {
       showErrorToast(error.response.data.message);
     } else {
-      showErrorToast("Something went wrong");
+      showErrorToast(error.response.data.message);
     }
 
     return false;

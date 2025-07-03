@@ -15,12 +15,11 @@ export const fetchFavorites = createAsyncThunk(
     const res = await axios.get(`${API_URL}/getFavorites`, {
       headers: getAuthHeader(),
     });
-    return res.data; // Expecting: [productId1, productId2, ...]
+    return res.data; 
   },
   {
     condition: (_, { getState }) => {
       const { favorites } = getState();
-      // Avoid refetch if already fetched or still loading
       if (favorites.loading || favorites.hasFetched) {
         return false;
       }

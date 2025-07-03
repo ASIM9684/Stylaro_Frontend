@@ -100,9 +100,9 @@ const ProductCard = ({ product, isFavorite, onToggleFavorite }) => {
         </div>
         <p className="text-gray-500 text-sm mb-2">{product.category}</p>
         <div className="flex items-center gap-2 mt-auto">
-          <span className="text-lg font-bold text-gray-900">Rs: {discountedPrice}</span>
+          <span className="text-lg font-bold text-gray-900">$: {discountedPrice}</span>
           {hasDiscount && (
-            <span className="text-sm text-gray-400 line-through">Rs: {product.price}</span>
+            <span className="text-sm text-gray-400 line-through">$: {product.price}</span>
           )}
         </div>
       </div>

@@ -61,7 +61,6 @@ const AddProduct = () => {
     try {
       let imageUrl = "";
 
-      // upload image only if a file is selected
       if (imageFile) {
         const imageData = new FormData();
         imageData.append("file", imageFile);
