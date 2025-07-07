@@ -6,6 +6,8 @@ import complainSlice from "./slice/complainSlice";
 import favoriteReducer from "./slice/favoriteSlice";
 import cartSlice from "./slice/cartSlice";
 import userSlice from "./slice/userSlice";
+import orderSlice from "./slice/orderSlice";
+import orderProductSlice from "./slice/orderProductSlice";
 
 export const store = configureStore({
   reducer: {
@@ -16,5 +18,7 @@ export const store = configureStore({
     favorites: favoriteReducer,
     cart: cartSlice,
     user: userSlice,
+    order: orderSlice,
+    orderProduct: orderProductSlice
   },
 });

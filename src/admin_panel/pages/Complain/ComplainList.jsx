@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { Search, Eye, X } from "lucide-react";
 import { fetchcomplains, clearcomplains } from "../../../redux/slice/complainSlice";
 
 const ComplainList = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedComplain, setSelectedComplain] = useState(null);
   const { complain = [], loadingcomplain, errorcomplain,fetchedById } = useSelector((state) => state.complain);

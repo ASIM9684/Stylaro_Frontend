@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { clearcomplains, fetchcomplains } from "../redux/slice/complainSlice";
 import { showErrorToast } from "../utlis/toast";
-
+import { motion } from "framer-motion";
 const Complain = () => {
   const [form, setForm] = useState({ subject: "", message: "" });
   const [loading, setLoading] = useState(false);
@@ -50,7 +50,11 @@ const Complain = () => {
   };
 
   return (
-    <div className="relative px-4 pb-20">
+    
+     <motion.div initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5 }}  className="relative px-4 pb-20">
       {/* Loader overlay */}
       {loading && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
@@ -139,7 +143,7 @@ const Complain = () => {
           )}
         </div>
       )}
-    </div>
+    </motion.div>
   );
 };
 

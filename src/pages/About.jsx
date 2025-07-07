@@ -1,8 +1,11 @@
 import React from "react";
-
+import { motion } from "framer-motion";
 const About = () => {
   return (
-    <div className=" py-12 px-4 sm:px-6 lg:px-8">
+    <motion.div initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5 }} className=" py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-[1200px] mx-auto">
         {/* Heading */}
         <div className="text-center mb-12">
@@ -28,24 +31,24 @@ const About = () => {
           </div>
         </div>
 
-{/* Vision Section */}
-<div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
-  <div>
-    <h2 className="text-2xl font-semibold text-gray-800 mb-2">Our Vision</h2>
-    <p className="text-gray-600 leading-relaxed">
-      We envision a future where technology meets creativity, helping people discover products that truly enhance their lifestyles. 
-      From fashion to function, we aim to be a brand that grows with you.
-    </p>
-  </div>
-  <img
-    src="https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-    alt="Our vision"
-    className="w-full rounded-2xl shadow-lg object-cover h-[300px]"
-  />
-</div>
+        {/* Vision Section */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+          <div>
+            <h2 className="text-2xl font-semibold text-gray-800 mb-2">Our Vision</h2>
+            <p className="text-gray-600 leading-relaxed">
+              We envision a future where technology meets creativity, helping people discover products that truly enhance their lifestyles.
+              From fashion to function, we aim to be a brand that grows with you.
+            </p>
+          </div>
+          <img
+            src="https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+            alt="Our vision"
+            className="w-full rounded-2xl shadow-lg object-cover h-[300px]"
+          />
+        </div>
 
       </div>
-    </div>
+    </motion.div>
   );
 };
 

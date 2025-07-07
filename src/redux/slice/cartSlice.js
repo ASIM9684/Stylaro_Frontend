@@ -10,9 +10,11 @@ const cartSlice = createSlice({
     addToCart: (state, action) => {
       const existing = state.items.find(item => item._id === action.payload._id);
       if (existing) {
-        existing.quantity += 1;
+        if (existing.quantity < existing.stock) {
+          existing.quantity += 1;
+        }
       } else {
-        state.items.push({ ...action.payload, quantity: 1 });
+        state.items.push({ ...action.payload, quantity: action.payload.stock ? 1 : 0, stock: action.payload.stock ? action.payload.stock : 0 });
       }
       localStorage.setItem("cartItems", JSON.stringify(state.items));
     },
@@ -24,7 +26,7 @@ const cartSlice = createSlice({
 
     increaseQuantity: (state, action) => {
       const item = state.items.find(i => i._id === action.payload);
-      if (item) {
+      if (item && item.quantity < item.stock) {
         item.quantity += 1;
       }
       localStorage.setItem("cartItems", JSON.stringify(state.items));

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Pencil, Search } from "lucide-react";
+import { Eye, Pencil, Search } from "lucide-react";
 import { clearuser, fetchuser } from "../../../redux/slice/userSlice";
 import { UpdateApi } from "../../../model/Model";
 
@@ -9,6 +9,7 @@ const UserList = () => {
     const dispatch = useDispatch();
     const [searchTerm, setSearchTerm] = useState("");
     const { user, loadinguser, erroruser } = useSelector((state) => state.user);
+    const navigate = useNavigate()
     function getRandomColor(seed = "") {
         const colors = [
             "#f59e0b",
@@ -33,7 +34,7 @@ const UserList = () => {
 
 
     const handleStatusChange = async (userId, newStatus) => {
-        const data = { userId, status: newStatus };
+        const data = {userId, status: newStatus };
         const success = await UpdateApi(data, "updateUserStatus", userId);
 
         if (success) {
@@ -77,8 +78,8 @@ const UserList = () => {
                             <th className="px-4 py-2 border-b">Image</th>
                             <th className="px-4 py-2 border-b">Address</th>
                             <th className="px-4 py-2 border-b">Date</th>
+                            <th className="px-4 py-2 border-b">Orders</th>
                             <th className="px-4 py-2 border-b">Status</th>
-                            <th className="px-4 py-2 border-b">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -107,7 +108,16 @@ const UserList = () => {
 
                                 <td className="px-4 py-3 border-b">{data.address ? data.address : "Not Provided"}</td>
                                 <td className="px-4 py-3 border-b">{new Date(data.createdAt).toLocaleString()}</td>
-                                <td className="px-4 py-3 border-b">{data.status}</td>
+                                <td className="px-4 py-3 border-b">
+                                    <button
+                                        onClick={() => navigate(`/admin/OrderList/${data._id}/${data.name}`)}
+                                        className="flex items-center gap-1 px-3 py-1.5 rounded-md border border-green-500 text-green-600 hover:bg-green-600 hover:text-white transition duration-200 text-sm font-semibold"
+                                    >
+                                        <Eye size={16} />
+                                        View
+                                    </button>
+
+                                </td>
                                 <td className="px-4 py-3 border-b space-y-2">
 
                                     <select
@@ -120,6 +130,8 @@ const UserList = () => {
                                         <option value="banned">banned</option>
                                     </select>
                                 </td>
+
+
 
                             </tr>
                         ))}

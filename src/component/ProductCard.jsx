@@ -4,6 +4,8 @@ import { Heart, Star, ShoppingBag } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../redux/slice/cartSlice";
 import { useNavigate } from "react-router-dom";
+import { getUserFromToken } from "../model/Model";
+import { showErrorToast } from "../utlis/toast";
 
 const ProductCard = ({ product, isFavorite, onToggleFavorite }) => {
 
@@ -12,9 +14,15 @@ const ProductCard = ({ product, isFavorite, onToggleFavorite }) => {
   const cartItems = useSelector((state) => state.cart.items);
   const navigate = useNavigate("");
   const handleAddToCart = () => {
-    dispatch(addToCart(product));
-    console.log(cartItems);
+    const user = getUserFromToken();
+    if(user){
+    dispatch(addToCart({ ...product, stock: product.quantity }))
     navigate("/cartPage")
+    }
+else{
+  showErrorToast("Login Required For Add To Cart")
+  return;
+}
   };
 
   const hasDiscount = product.discount && product.discount > 0;
@@ -31,7 +39,7 @@ const ProductCard = ({ product, isFavorite, onToggleFavorite }) => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-<div className="relative h-[400px] sm:h-[350px] overflow-hidden">
+      <div className="relative h-[400px] sm:h-[350px] overflow-hidden">
 
         <motion.img
           className="w-full h-full object-fill"

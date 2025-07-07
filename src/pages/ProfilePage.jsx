@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getUserFromToken, authapi } from "../model/Model";
 import { showErrorToast, showSuccessToast } from "../utlis/toast";
-
+import { motion } from "framer-motion";
 const CLOUDINARY_UPLOAD_PRESET = "Stylaro";
 const CLOUDINARY_CLOUD_NAME = "dylzc8c7j";
 
@@ -136,7 +136,10 @@ const ProfilePage = () => {
   }
 
   return (
-    <div className=" bg-gray-100 py-10 px-4 flex justify-center">
+    <motion.div initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5 }} className=" bg-gray-100 py-10 px-4 flex justify-center">
       <div className="bg-white shadow-lg rounded-xl p-8 w-full max-w-md space-y-6">
         <h2 className="text-2xl font-bold text-center text-gray-800">
           {editMode ? "Edit Profile" : "Your Profile"}
@@ -273,7 +276,7 @@ const ProfilePage = () => {
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

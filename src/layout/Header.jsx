@@ -32,11 +32,12 @@ const Header = () => {
     ...(isLoggedIn
       ? [
         { name: "Cart", path: "/cartPage" },
-          { name: "Profile", path: "/profile" },
-        ]
+        { name: "Orders", path: "/OrderHistoryPage" },
+        { name: "Profile", path: "/profile" },
+      ]
       : [
-          { name: "Login", path: "/login" }
-        ]
+        { name: "Login", path: "/login" }
+      ]
     ),
   ];
 
@@ -45,7 +46,7 @@ const Header = () => {
       <div className="max-w-[1200px] mx-auto px-6 py-4 flex justify-between items-center">
         {/* Logo */}
         <Link to="/" className="text-2xl font-bold text-green-600">
-          MyWebsite
+          Stylaro
         </Link>
 
         {/* Desktop Nav */}
@@ -72,9 +73,8 @@ const Header = () => {
 
       {/* Mobile Menu */}
       <div
-        className={`md:hidden transition-all duration-300 ease-in-out overflow-hidden bg-white ${
-          isOpen ? "max-h-96 py-4 px-6" : "max-h-0 px-6 py-0"
-        }`}
+        className={`md:hidden transition-all duration-300 ease-in-out overflow-hidden bg-white ${isOpen ? "max-h-96 py-4 px-6" : "max-h-0 px-6 py-0"
+          }`}
       >
         <ul className="flex flex-col gap-3">
           {navItems.map((item, index) => (

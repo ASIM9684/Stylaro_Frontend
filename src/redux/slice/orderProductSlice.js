@@ -3,12 +3,12 @@ import axios from "axios";
 import { getAuthHeader } from "../../model/Model";
 import { showErrorToast } from "../../utlis/toast";
 
-const API_URL = "http://192.168.18.15:8000/getOrder";
+const API_URL = "http://192.168.18.15:8000/getOrderProduct";
 
-export const fetchorders = createAsyncThunk(
-    "order/fetchAll",
+export const fetchorderProducts = createAsyncThunk(
+    "orderProduct/fetchAll",
     async (id = null, { rejectWithValue }) => {
-        
+
         if (!id) {
             return {
                 data: [],
@@ -21,7 +21,7 @@ export const fetchorders = createAsyncThunk(
             const response = await axios.get(endpoint, {
                 headers: getAuthHeader(),
             });
-            
+
             return {
                 data: response.data,
                 fetchedById: id,
@@ -44,9 +44,9 @@ export const fetchorders = createAsyncThunk(
     },
     {
         condition: (id, { getState }) => {
-            const { order } = getState();
+            const { orderProduct } = getState();
 
-            if (order.fetchedById === id) {
+            if (orderProduct.fetchedById === id) {
                 return false;
             }
 
@@ -56,39 +56,39 @@ export const fetchorders = createAsyncThunk(
 );
 
 
-const orderSlice = createSlice({
-    name: "order",
+const orderProductSlice = createSlice({
+    name: "orderProduct",
     initialState: {
-        order: [],
-        loadingorder: false,
-        errororder: null,
+        orderProduct: [],
+        loadingorderProduct: false,
+        errororderProduct: null,
         fetchedById: "",
     },
     reducers: {
-        clearorders: (state) => {
-            state.order = [];
+        clearorderProducts: (state) => {
+            state.orderProduct = [];
             state.fetchedById = "";
         },
     },
     extraReducers: (builder) => {
         builder
-            .addCase(fetchorders.pending, (state) => {
-                state.loadingorder = true;
-                state.errororder = null;
+            .addCase(fetchorderProducts.pending, (state) => {
+                state.loadingorderProduct = true;
+                state.errororderProduct = null;
                 state.fetchedById = "";
             })
-            .addCase(fetchorders.fulfilled, (state, action) => {
-                state.loadingorder = "";
-                state.order = action.payload.data;
+            .addCase(fetchorderProducts.fulfilled, (state, action) => {
+                state.loadingorderProduct = "";
+                state.orderProduct = action.payload.data;
                 state.fetchedById = action.payload.fetchedById;
             })
-            .addCase(fetchorders.rejected, (state, action) => {
-                state.loadingorder = false;
-                state.errororder = action.payload || action.error.message;
+            .addCase(fetchorderProducts.rejected, (state, action) => {
+                state.loadingorderProduct = false;
+                state.errororderProduct = action.payload || action.error.message;
                 state.fetchedById = "";
             });
     },
 });
 
-export const { clearorders } = orderSlice.actions;
-export default orderSlice.reducer;
+export const { clearorderProducts } = orderProductSlice.actions;
+export default orderProductSlice.reducer;

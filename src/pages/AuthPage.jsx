@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { showErrorToast } from "../utlis/toast";
 import { authapi } from "../model/Model";
 import { useNavigate } from "react-router-dom";
-
+import { motion } from "framer-motion";
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -18,11 +18,11 @@ const AuthPage = () => {
   const toggleMode = () => {
     setIsLogin(!isLogin);
     setFormData({
-    name: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-  })
+      name: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    })
   };
 
   const handleChange = (e) => {
@@ -59,7 +59,10 @@ const AuthPage = () => {
         </div>
       )}
 
-      <div className="min-h-screen flex items-center justify-center px-4">
+      <motion.div initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5 }} className="min-h-screen flex items-center justify-center px-4">
         <div className="bg-white shadow-xl rounded-xl w-full max-w-md p-8 space-y-6">
           <h2 className="text-2xl font-bold text-center text-gray-800">
             {isLogin ? "Login to Your Account" : "Create a New Account"}
@@ -129,11 +132,10 @@ const AuthPage = () => {
             <button
               type="submit"
               disabled={loading}
-              className={`w-full font-semibold py-2 rounded-md transition-all ${
-                loading
+              className={`w-full font-semibold py-2 rounded-md transition-all ${loading
                   ? "bg-gray-400 cursor-not-allowed"
                   : "bg-green-600 text-white hover:bg-green-700"
-              }`}
+                }`}
             >
               {isLogin ? "Login" : "Sign Up"}
             </button>
@@ -149,7 +151,7 @@ const AuthPage = () => {
             </button>
           </p>
         </div>
-      </div>
+      </motion.div>
     </>
   );
 };

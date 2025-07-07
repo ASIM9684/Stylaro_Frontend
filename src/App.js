@@ -24,6 +24,9 @@ import CartPage from "./pages/CartPage";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import "./utlis/axiosInterceptor";
+import OrderList from "./admin_panel/pages/User/OrderList";
+import OrderProductList from "./admin_panel/pages/User/OrderProductList";
+import OrderHistoryPage from "./pages/OrderHistoryPage";
 
 const stripePromise = loadStripe("pk_test_51RdTvkPTy0kI4EYZ4CJfzjJ0Jxy0omtDT9pLGSMonxX7Sxx78ZdxWmIYAqeQFqVVpX8MnRci9dGb50xb70HC7x16001nraHEND");
 export default function App() {
@@ -46,6 +49,14 @@ export default function App() {
             </Layout>
           }
           path="/products"
+        />
+        <Route
+          element={
+            <Layout>
+              <OrderHistoryPage />
+            </Layout>
+          }
+          path="/OrderHistoryPage"
         />
         <Route
           path="/complain"
@@ -186,6 +197,22 @@ export default function App() {
           element={
             <LayoutAdmin>
               <UserList />
+            </LayoutAdmin>
+          }
+        />
+        <Route
+          path="/admin/OrderList/:id/:name"
+          element={
+            <LayoutAdmin>
+              <OrderList />
+            </LayoutAdmin>
+          }
+        />
+        <Route
+          path="/admin/OrderProductList/:id"
+          element={
+            <LayoutAdmin>
+              <OrderProductList />
             </LayoutAdmin>
           }
         />

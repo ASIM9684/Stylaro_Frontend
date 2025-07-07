@@ -68,75 +68,6 @@ const CategoryGrid = () => {
   );
 };
 
-// Newsletter Component with animations
-const Newsletter = () => {
-  const [email, setEmail] = useState("");
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Handle subscription logic
-    alert(`Thank you for subscribing with ${email}`);
-    setEmail("");
-  };
-
-  return (
-    <motion.div 
-      className="bg-gray-100 py-16"
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5 }}
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <motion.h2 
-          className="text-3xl font-bold text-gray-900 mb-4"
-          initial={{ y: -20, opacity: 0 }}
-          whileInView={{ y: 0, opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-        >
-          Stay Updated
-        </motion.h2>
-        <motion.p 
-          className="text-lg text-gray-600 max-w-2xl mx-auto mb-8"
-          initial={{ y: -10, opacity: 0 }}
-          whileInView={{ y: 0, opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-        >
-          Subscribe to our newsletter for the latest products, deals, and style inspiration.
-        </motion.p>
-        <motion.form 
-          onSubmit={handleSubmit} 
-          className="max-w-md mx-auto flex gap-2"
-          initial={{ y: 10, opacity: 0 }}
-          whileInView={{ y: 0, opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-        >
-          <motion.input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Your email address"
-            className="flex-1 px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            required
-            whileFocus={{ scale: 1.02 }}
-            transition={{ type: "spring", stiffness: 300 }}
-          />
-          <motion.button
-            type="submit"
-            className="bg-black text-white px-6 py-3 rounded-lg font-medium hover:bg-gray-800 transition-colors"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            Subscribe
-          </motion.button>
-        </motion.form>
-      </div>
-    </motion.div>
-  );
-};
 
 const Home = () => {
   const {
@@ -226,8 +157,6 @@ const groupByCategory = (products) => {
 ))}
 
 
-      {/* Newsletter */}
-      <Newsletter />
     </div>
   );
 };
