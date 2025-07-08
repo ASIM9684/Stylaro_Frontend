@@ -82,7 +82,7 @@ const CartPage = () => {
       }
 
       const response = await axios.post(
-        "http://192.168.18.15:8000/order",
+        "https://stylarobackend.zeabur.app/order",
         {
           items: cartItems,
           address: address,

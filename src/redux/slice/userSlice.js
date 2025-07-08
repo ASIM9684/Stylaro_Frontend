@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { getAuthHeader } from "../../model/Model";
 
-const API_URL = "http://192.168.18.15:8000/getUser";
+const API_URL = "https://stylarobackend.zeabur.app/getUser";
 
 export const fetchuser = createAsyncThunk(
   "user/fetchAll",

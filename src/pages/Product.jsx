@@ -94,11 +94,10 @@ const Product = () => {
                 </h3>
                 <button
                   onClick={() => setShowFavoritesOnly(!showFavoritesOnly)}
-                  className={`w-full flex items-center justify-between px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                    showFavoritesOnly
+                  className={`w-full flex items-center justify-between px-4 py-2 rounded-lg text-sm font-medium transition-colors ${showFavoritesOnly
                       ? "bg-pink-600 text-white"
                       : "bg-gray-100 hover:bg-gray-200 text-gray-700"
-                  }`}
+                    }`}
                 >
                   <span>Show Favorites Only</span>
                   <Heart className="w-4 h-4" fill={showFavoritesOnly ? "white" : "none"} />
@@ -198,7 +197,7 @@ const Product = () => {
                   ) : categories && categories.length > 0 ? (
                     categories.map((category) => (
                       <button
-                        key={category._id || category.name}
+                        key={category._id}
                         onClick={() =>
                           setActiveCategory(
                             activeCategory === category.name
@@ -315,7 +314,7 @@ const Product = () => {
                 </div>
               </div>
             ) : filteredProducts && filteredProducts.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6 px-4 sm:px-6 lg:px-8">
                 {filteredProducts.map((product) => (
                   <ProductCard
                     key={product._id}
@@ -325,6 +324,7 @@ const Product = () => {
                   />
                 ))}
               </div>
+
             ) : (
               <div className="bg-gray-50 rounded-xl shadow-sm p-12 text-center border border-gray-200">
                 <div className="max-w-md mx-auto">

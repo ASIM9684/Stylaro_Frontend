@@ -72,30 +72,30 @@ const ScrollSection = ({ title, products, gradient, skew }) => {
     dispatch(toggleFavorite({ productId }));
   };
 
-  const manualScroll = (dir) => {
-    const container = containerRef.current;
-    if (!container) return;
-    const scrollAmount = container.offsetWidth * 0.8;
+  // const manualScroll = (dir) => {
+  //   const container = containerRef.current;
+  //   if (!container) return;
+  //   const scrollAmount = container.offsetWidth * 0.8;
 
-    if (isMobile) {
-      const newScroll =
-        dir === "left"
-          ? container.scrollLeft - scrollAmount
-          : container.scrollLeft + scrollAmount;
-      container.scrollTo({ left: newScroll, behavior: "smooth" });
-    } else {
-      const containerWidth = container.offsetWidth;
-      const maxTranslate = Math.max(0, totalWidth - containerWidth);
-      const amount = dir === "left" ? scrollAmount : -scrollAmount;
+  //   if (isMobile) {
+  //     const newScroll =
+  //       dir === "left"
+  //         ? container.scrollLeft - scrollAmount
+  //         : container.scrollLeft + scrollAmount;
+  //     container.scrollTo({ left: newScroll, behavior: "smooth" });
+  //   } else {
+  //     const containerWidth = container.offsetWidth;
+  //     const maxTranslate = Math.max(0, totalWidth - containerWidth);
+  //     const amount = dir === "left" ? scrollAmount : -scrollAmount;
 
-      setTranslateX((prev) => {
-        let next = prev + amount;
-        if (next > 0) next = 0;
-        if (next < -maxTranslate) next = -maxTranslate;
-        return next;
-      });
-    }
-  };
+  //     setTranslateX((prev) => {
+  //       let next = prev + amount;
+  //       if (next > 0) next = 0;
+  //       if (next < -maxTranslate) next = -maxTranslate;
+  //       return next;
+  //     });
+  //   }
+  // };
 
   return (
     <motion.div className="relative overflow-hidden">
@@ -122,7 +122,7 @@ const ScrollSection = ({ title, products, gradient, skew }) => {
           </div>
         </motion.div>
 
-        <AnimatePresence>
+        {/* <AnimatePresence>
           <motion.button
             onClick={() => manualScroll("left")}
             className="sm:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 bg-white p-2 rounded-full shadow-lg hover:bg-gray-100 z-10"
@@ -134,7 +134,7 @@ const ScrollSection = ({ title, products, gradient, skew }) => {
           >
             <ChevronLeft className="w-5 h-5 text-gray-700" />
           </motion.button>
-        </AnimatePresence>
+        </AnimatePresence> */}
 
         <div
           ref={containerRef}
@@ -174,7 +174,7 @@ const ScrollSection = ({ title, products, gradient, skew }) => {
           </motion.div>
         </div>
 
-        <AnimatePresence>
+        {/* <AnimatePresence>
           <motion.button
             onClick={() => manualScroll("right")}
             className="sm:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 bg-white p-2 rounded-full shadow-lg hover:bg-gray-100 z-10"
@@ -186,7 +186,7 @@ const ScrollSection = ({ title, products, gradient, skew }) => {
           >
             <ChevronRight className="w-5 h-5 text-gray-700" />
           </motion.button>
-        </AnimatePresence>
+        </AnimatePresence> */}
       </div>
     </motion.div>
   );

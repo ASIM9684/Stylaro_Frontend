@@ -24,10 +24,10 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get("http://192.168.18.15:8000/monthlyOrderChart",{
+        const res = await axios.get("https://stylarobackend.zeabur.app/monthlyOrderChart",{
           headers : getAuthHeader()
         })
-        const rescount = await axios.get("http://192.168.18.15:8000/getDashboardCount",{
+        const rescount = await axios.get("https://stylarobackend.zeabur.app/getDashboardCount",{
           headers : getAuthHeader()
         })
         setCount(rescount.data)

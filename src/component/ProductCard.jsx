@@ -39,7 +39,7 @@ else{
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="relative h-[400px] sm:h-[350px] overflow-hidden">
+      <div className="relative h-[300px] sm:h-[350px] overflow-hidden">
 
         <motion.img
           className="w-full h-full object-fill"

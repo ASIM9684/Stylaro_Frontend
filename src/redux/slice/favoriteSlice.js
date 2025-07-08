@@ -3,7 +3,7 @@ import axios from "axios";
 import { getAuthHeader, getUserFromToken } from "../../model/Model";
 import { showErrorToast, showSuccessToast } from "../../utlis/toast";
 
-const API_URL = "http://192.168.18.15:8000";
+const API_URL = "https://stylarobackend.zeabur.app";
 
 // Fetch all favorite product IDs
 export const fetchFavorites = createAsyncThunk(

@@ -3,7 +3,7 @@ import axios from "axios";
 import { getAuthHeader } from "../../model/Model";
 import { showErrorToast } from "../../utlis/toast";
 
-const API_URL = "http://192.168.18.15:8000/getOrder";
+const API_URL = "https://stylarobackend.zeabur.app/getOrder";
 
 export const fetchorders = createAsyncThunk(
     "order/fetchAll",

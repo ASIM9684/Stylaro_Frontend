@@ -145,7 +145,7 @@ const groupByCategory = (products) => {
 
       {/* Category Sections */}
 {groupedProducts.map(([category, items], index) => (
-  <div className="mb-20">
+  <div className="mb-20"   key={category}>
   <ScrollSection
     key={category}
     title={category}

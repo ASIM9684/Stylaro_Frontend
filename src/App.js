@@ -27,6 +27,7 @@ import "./utlis/axiosInterceptor";
 import OrderList from "./admin_panel/pages/User/OrderList";
 import OrderProductList from "./admin_panel/pages/User/OrderProductList";
 import OrderHistoryPage from "./pages/OrderHistoryPage";
+import ProtectedAdminRoute from "./utlis/ProtectedRoute";
 
 const stripePromise = loadStripe("pk_test_51RdTvkPTy0kI4EYZ4CJfzjJ0Jxy0omtDT9pLGSMonxX7Sxx78ZdxWmIYAqeQFqVVpX8MnRci9dGb50xb70HC7x16001nraHEND");
 export default function App() {
@@ -104,116 +105,141 @@ export default function App() {
         <Route
           path="/admin/dashboard"
           element={
+            <ProtectedAdminRoute>
             <LayoutAdmin>
               <Dashboard />
             </LayoutAdmin>
+            </ProtectedAdminRoute>
           }
         />
         <Route
           path="/admin/addcategory"
           element={
-            <LayoutAdmin>
+                 <ProtectedAdminRoute>            <LayoutAdmin>
               <AddCategory />
             </LayoutAdmin>
+            </ProtectedAdminRoute>
           }
         />
         <Route
           path="/admin/CategoryList"
           element={
-            <LayoutAdmin>
+                 <ProtectedAdminRoute>            <LayoutAdmin>
               <CategoryList />
             </LayoutAdmin>
+            </ProtectedAdminRoute>
           }
         />
         <Route
           path="/admin/EditCategory"
           element={
+                 <ProtectedAdminRoute>
             <LayoutAdmin>
               <EditCategory />
             </LayoutAdmin>
+            </ProtectedAdminRoute>
           }
         />
         <Route
           path="/admin/addcolor"
           element={
+                 <ProtectedAdminRoute>
             <LayoutAdmin>
               <AddColors />
             </LayoutAdmin>
+            </ProtectedAdminRoute>
           }
         />
         <Route
           path="/admin/ColorList"
           element={
+                 <ProtectedAdminRoute>
             <LayoutAdmin>
               <ColorList />
             </LayoutAdmin>
+            </ProtectedAdminRoute>
           }
         />
         <Route
           path="/admin/EditColor"
           element={
+                 <ProtectedAdminRoute>
             <LayoutAdmin>
               <EditColor />
             </LayoutAdmin>
+            </ProtectedAdminRoute>
           }
         />
 
         <Route
           path="/admin/addProduct"
           element={
+                 <ProtectedAdminRoute>
             <LayoutAdmin>
               <AddProduct />
             </LayoutAdmin>
+            </ProtectedAdminRoute>
           }
         />
 
         <Route
           path="/admin/ProductList"
           element={
+                 <ProtectedAdminRoute>
             <LayoutAdmin>
               <ProductList />
             </LayoutAdmin>
+            </ProtectedAdminRoute>
           }
         />
 
         <Route
           path="/admin/EditProduct/:id"
           element={
+                 <ProtectedAdminRoute>
             <LayoutAdmin>
               <EditProduct />
             </LayoutAdmin>
+            </ProtectedAdminRoute>
           }
         />
         <Route
           path="/admin/ComplainList"
           element={
-            <LayoutAdmin>
+                 <ProtectedAdminRoute>            <LayoutAdmin>
               <ComplainList />
             </LayoutAdmin>
+            </ProtectedAdminRoute>
           }
         />
         <Route
           path="/admin/UserList"
           element={
+                 <ProtectedAdminRoute>
             <LayoutAdmin>
               <UserList />
             </LayoutAdmin>
+            </ProtectedAdminRoute>
           }
         />
         <Route
           path="/admin/OrderList/:id/:name"
           element={
+                 <ProtectedAdminRoute>
             <LayoutAdmin>
               <OrderList />
             </LayoutAdmin>
+            </ProtectedAdminRoute>
           }
         />
         <Route
           path="/admin/OrderProductList/:id"
           element={
+                 <ProtectedAdminRoute>
             <LayoutAdmin>
               <OrderProductList />
             </LayoutAdmin>
+            </ProtectedAdminRoute>
           }
         />
       </Routes>
