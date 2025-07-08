@@ -12,7 +12,6 @@ const Header = ({ toggleSidebar }) => {
   useEffect(() => {
     const getuser = getUserFromToken();
     if (getuser) {
-      console.log(getuser);
       setUser({
         name: getuser.name || "",
         address: getuser.address || "",

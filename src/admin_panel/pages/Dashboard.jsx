@@ -10,34 +10,61 @@ import {
   CartesianGrid,
 } from "recharts";
 import { getAuthHeader } from "../../model/Model";
-
-
+import { io } from "socket.io-client";
 
 const Dashboard = () => {
   const [orderData, setOrderData] = useState([]);
-  const [count,setCount] = useState({
-    productCount : "",
-    userCount : "",
-    orderCount : ""
-  })
+  const [count, setCount] = useState({
+    productCount: "",
+    userCount: "",
+    orderCount: ""
+  });
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await axios.get("https://stylarobackend.zeabur.app/monthlyOrderChart",{
-          headers : getAuthHeader()
-        })
-        const rescount = await axios.get("https://stylarobackend.zeabur.app/getDashboardCount",{
-          headers : getAuthHeader()
-        })
-        setCount(rescount.data)
-        setOrderData(res.data);
-      } catch (error) {
+    const socket = io("http://stylarobackend.zeabur.app");
 
-      }
+    socket.on("connect", () => {
+      console.log("🟢 Connected to WebSocket");
+    });
+
+    socket.on("paymentStatusUpdate", (data) => {
+      console.log("📦 Payment Status Update:", data);
+      fetchDashboardData();
+    });
+
+    socket.on("newOrderCreated", (data) => {
+      console.log("📈 New Order Created:", data);
+      fetchDashboardData();
+    });
+
+    return () => {
+      socket.disconnect();
+      console.log("🔴 Disconnected from WebSocket");
+    };
+  }, []);
+
+
+  const fetchDashboardData = async () => {
+    try {
+      const [chartRes, countRes] = await Promise.all([
+        axios.get("http://stylarobackend.zeabur.app/monthlyOrderChart", {
+          headers: getAuthHeader()
+        }),
+        axios.get("http://stylarobackend.zeabur.app/getDashboardCount", {
+          headers: getAuthHeader()
+        }),
+      ]);
+      setOrderData(chartRes.data);
+      setCount(countRes.data);
+    } catch (error) {
+      console.error("Failed to fetch dashboard data", error);
     }
-    fetchData()
-  }, [])
+  };
+
+  useEffect(() => {
+    fetchDashboardData();
+  }, []);
+
   return (
     <div className="flex">
       <div className="w-full min-h-screen bg-gray-100">

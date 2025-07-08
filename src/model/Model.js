@@ -2,7 +2,7 @@ import axios from "axios";
 import { showErrorToast, showSuccessToast } from "../utlis/toast";
 import { jwtDecode } from "jwt-decode";
 
-const apikey = "https://stylarobackend.zeabur.app";
+const apikey = "http://stylarobackend.zeabur.app";
 
 async function addApi(data, route, navigate) {
   try {
