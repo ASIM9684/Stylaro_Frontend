@@ -27,10 +27,9 @@ const OrderHistoryPage = () => {
     }, []);
 
     return (
-        <motion.div initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
+        <motion.div    initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
             className="min-h-screen bg-gray-50 py-10 px-4 sm:px-8">
             <div className="max-w-5xl mx-auto">
                 <h1 className="text-3xl font-bold text-gray-800 mb-8">My Orders</h1>
@@ -40,7 +39,11 @@ const OrderHistoryPage = () => {
                         <Loader className="animate-spin text-gray-500" size={32} />
                     </div>
 
-                ) : (
+                ) : order.length === 0 ? (
+  <div className="text-center text-gray-500 text-lg mt-10">
+    You haven’t placed any orders yet.
+  </div>
+) : (
                     <div className="space-y-6">
                         {order.map((order) => (
                             <div

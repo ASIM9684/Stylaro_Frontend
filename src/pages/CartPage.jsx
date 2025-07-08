@@ -140,7 +140,7 @@ const CartPage = () => {
           <h1 className="text-3xl font-bold text-gray-800 mb-6">Your Cart</h1>
 
           {cartItems.length === 0 ? (
-            <p className="text-gray-500 text-lg">Your cart is empty.</p>
+            <p className="text-center text-gray-500 text-lg mt-10">Your cart is empty.</p>
           ) : (
             <>
               <div className="space-y-6">

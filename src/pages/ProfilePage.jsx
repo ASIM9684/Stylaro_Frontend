@@ -136,9 +136,8 @@ const ProfilePage = () => {
   }
 
   return (
-    <motion.div initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      viewport={{ once: true }}
+    <motion.div    initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }} className=" bg-gray-100 py-10 px-4 flex justify-center">
       <div className="bg-white shadow-lg rounded-xl p-8 w-full max-w-md space-y-6">
         <h2 className="text-2xl font-bold text-center text-gray-800">

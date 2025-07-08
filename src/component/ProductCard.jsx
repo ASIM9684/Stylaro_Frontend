@@ -32,7 +32,7 @@ else{
 
   return (
     <motion.div
-      className="bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg relative group flex flex-col"
+      className="bg-white rounded-xl shadow-xl overflow-hidden transition-all duration-300 hover:shadow-lg relative group flex flex-col"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       initial={{ opacity: 0, y: 20 }}

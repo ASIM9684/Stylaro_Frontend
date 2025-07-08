@@ -59,10 +59,9 @@ const AuthPage = () => {
         </div>
       )}
 
-      <motion.div initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5 }} className="min-h-screen flex items-center justify-center px-4">
+      <motion.div    initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}className="min-h-screen flex items-center justify-center px-4">
         <div className="bg-white shadow-xl rounded-xl w-full max-w-md p-8 space-y-6">
           <h2 className="text-2xl font-bold text-center text-gray-800">
             {isLogin ? "Login to Your Account" : "Create a New Account"}

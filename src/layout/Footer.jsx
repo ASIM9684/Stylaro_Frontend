@@ -32,7 +32,7 @@ const Footer = () => {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.6 }}
         >
-          &copy; {new Date().getFullYear()} Aasim Inc. All Rights Reserved.
+          &copy; {new Date().getFullYear()} All Rights Reserved.
         </motion.p>
       </div>
     </motion.footer>

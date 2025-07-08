@@ -105,7 +105,7 @@ const groupByCategory = (products) => {
 
   const sectionStyles = [
   {
-    gradient: "bg-gradient-to-r from-blue-900 to-indigo-800",
+    gradient: "bg-gradient-to-r from-blue-900 to-gray-800",
     skew: "skew-y-[-3deg]",
   },
   {
@@ -125,7 +125,7 @@ const groupByCategory = (products) => {
   const groupedProducts = groupByCategory(products);
   const featuredProducts = getOneProductPerCategory(products);
   return (
-    <div className="bg-white">
+    <div className="">
       {/* Hero Section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 mb-10">
         <ImageSlidShow />
@@ -133,7 +133,7 @@ const groupByCategory = (products) => {
 
       {/* Featured Products */}
       <ScrollSection 
-        title="Featured Products" 
+        title="Latest Products" 
         key={featuredProducts}
         products={featuredProducts} 
         gradient={sectionStyles[1].gradient}
