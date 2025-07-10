@@ -129,7 +129,7 @@ const Chatbox = () => {
   <div>Category: {productData["Category"]}</div>
   <div>Color: {productData["Color"]}</div>
   <div>Quantity: {productData["Quantity"]}</div>
-  <div>Discount: {productData["Discount"]}</div>
+  <div>Discount: %{productData["Discount"]}</div>
 </div>
 
             );
