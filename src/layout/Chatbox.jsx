@@ -28,6 +28,8 @@ const Chatbox = () => {
 
     const reply = await sendChatMessage(input, updatedMessages);
     const botMsg = { text: reply, sender: "bot" };
+    console.log(reply);
+    
     const finalMessages = [...updatedMessages, botMsg].slice(-20);
     setMessages(finalMessages);
     setLoading(false);
@@ -84,17 +86,61 @@ const Chatbox = () => {
             </button>
           </div>
           <div className="flex-1 overflow-y-auto px-4 py-2 space-y-2 text-sm">
-            {messages.map((msg, index) => (
-              <div
-                key={index}
-                className={`p-2 rounded-lg max-w-[80%] ${msg.sender === "user"
-                  ? "bg-green-100 ml-auto text-right"
-                  : "bg-gray-200 mr-auto"
-                  }`}
-              >
-                {msg.text}
-              </div>
-            ))}
+         {messages.map((msg, index) => {
+  return msg.sender === "user" ? (
+    <div
+      key={index}
+      className="p-2 bg-green-100 rounded-lg max-w-[80%] ml-auto text-right"
+    >
+      {msg.text}
+    </div>
+  ) : (
+    <div
+      key={index}
+      className="bg-gray-200 p-2 rounded-lg max-w-[80%] mr-auto whitespace-pre-line"
+    >
+      {msg.text.includes("Product:") ? (
+        msg.text
+          .split("\n\n")
+          .filter(p => p.includes("Product:"))
+          .map((productBlock, idx) => {
+            const lines = productBlock.split("\n");
+            const productData = {};
+            lines.forEach(line => {
+              const [key, ...rest] = line.split(": ");
+              productData[key?.trim()] = rest.join(": ").trim();
+            });
+
+            return (
+            <div key={idx} className="mb-2 p-2 border rounded bg-white shadow text-left text-xs">
+  <div><strong>{productData["Product"]}</strong></div>
+  
+{productData["Image"]?.startsWith("http") && (
+  <img
+    src={productData["Image"]}
+    alt={productData["Product"] || "Product Image"}
+    className="w-24 h-24 object-contain rounded my-2"
+  />
+)}
+
+  <div>Price: {productData["Price"]}</div>
+  <div>Rating: {productData["Rating"]}</div>
+  <div>Gender: {productData["Gender"]}</div>
+  <div>Category: {productData["Category"]}</div>
+  <div>Color: {productData["Color"]}</div>
+  <div>Quantity: {productData["Quantity"]}</div>
+  <div>Discount: {productData["Discount"]}</div>
+</div>
+
+            );
+          })
+      ) : (
+        <div>{msg.text}</div>
+      )}
+    </div>
+  );
+})}
+
             {loading && <div className="text-xs text-gray-500">Typing...</div>}
           </div>
        <div className="flex border-t px-2 py-2 items-center">
