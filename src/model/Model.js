@@ -124,4 +124,26 @@ const getAuthHeader = () => {
   return token ? { Authorization: `Bearer ${token}` } : {};
 };
 
-export { addApi, UpdateApi, getApi, authapi, getUserFromToken, getAuthHeader };
+
+async function sendChatMessage(prompt, history) {
+  try {
+    console.log(history);
+    
+    const response = await axios.post(
+      `${apikey}/chat`,
+      { prompt , history},
+      { headers: { "Content-Type": "application/json" } }
+    );
+
+    if (response.status === 200 && response.data?.reply) {
+      return response.data.reply;
+    } else {
+      return "Sorry, I didn't get that.";
+    }
+  } catch (error) {
+    console.error("Chatbot error:", error);
+    return "Something went wrong. Try again later.";
+  }
+}
+
+export { addApi, UpdateApi, getApi, authapi, getUserFromToken, getAuthHeader,sendChatMessage };
