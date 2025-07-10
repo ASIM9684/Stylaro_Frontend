@@ -127,8 +127,6 @@ const getAuthHeader = () => {
 
 async function sendChatMessage(prompt, history) {
   try {
-    console.log(history);
-    
     const response = await axios.post(
       `${apikey}/chat`,
       { prompt , history},
@@ -142,6 +140,7 @@ async function sendChatMessage(prompt, history) {
     }
   } catch (error) {
     console.error("Chatbot error:", error);
+    
     return "Something went wrong. Try again later.";
   }
 }

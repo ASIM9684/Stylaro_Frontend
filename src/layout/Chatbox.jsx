@@ -19,21 +19,20 @@ const Chatbox = () => {
     if (!input.trim()) return;
 
     const userMsg = { text: input, sender: "user" };
-    const updatedMessages = [...messages, userMsg];
+    const updatedMessages = [...messages, userMsg].slice(-20);
     setMessages(updatedMessages);
     setInput("");
     setLoading(true);
 
-    const reply = await sendChatMessage(input, updatedMessages); // Send history too
+    const reply = await sendChatMessage(input, updatedMessages);
 
     const botMsg = { text: reply, sender: "bot" };
-    const finalMessages = [...updatedMessages, botMsg];
+    const finalMessages = [...updatedMessages, botMsg].slice(-20); 
     setMessages(finalMessages);
     setLoading(false);
   };
 
 
-  // 🧠 Persist messages to sessionStorage on each update
   useEffect(() => {
     sessionStorage.setItem("chatMessages", JSON.stringify(messages));
   }, [messages]);
@@ -51,8 +50,8 @@ const Chatbox = () => {
               <div
                 key={index}
                 className={`p-2 rounded-lg max-w-[80%] ${msg.sender === "user"
-                    ? "bg-green-100 ml-auto text-right"
-                    : "bg-gray-200 mr-auto"
+                  ? "bg-green-100 ml-auto text-right"
+                  : "bg-gray-200 mr-auto"
                   }`}
               >
                 {msg.text}
