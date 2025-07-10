@@ -97,29 +97,34 @@ const Chatbox = () => {
             ))}
             {loading && <div className="text-xs text-gray-500">Typing...</div>}
           </div>
-          <div className="flex border-t px-2 py-2 items-center">
-            <button
-              onClick={startListening}
-              className={`mr-2 p-2 rounded-full ${isListening ? "bg-red-100" : "bg-gray-100"}`}
-              title="Click to speak"
-            >
-              <Mic className={isListening ? "text-red-600" : "text-gray-600"} size={16} />
-            </button>
-            <input
-              type="text"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-              placeholder="Type a message..."
-              className="flex-1 outline-none px-2 py-1 text-sm border rounded-l-lg"
-            />
-            <button
-              onClick={sendMessage}
-              className="bg-green-500 text-white px-3 rounded-r-lg hover:bg-green-600"
-            >
-              <SendHorizonal size={16} />
-            </button>
-          </div>
+       <div className="flex border-t px-2 py-2 items-center">
+  <button
+    onClick={startListening}
+    className={`w-9 h-9 flex items-center justify-center rounded-full mr-2 ${
+      isListening ? "bg-red-100" : "bg-gray-100"
+    }`}
+    title="Click to speak"
+  >
+    <Mic className={isListening ? "text-red-600" : "text-gray-600"} size={16} />
+  </button>
+
+  <input
+    type="text"
+    value={input}
+    onChange={(e) => setInput(e.target.value)}
+    onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+    placeholder="Type a message..."
+    className="flex-1 outline-none px-2 py-1 text-sm border rounded-l-lg h-9"
+  />
+
+  <button
+    onClick={sendMessage}
+    className="h-9 bg-green-500 text-white px-3 rounded-r-lg hover:bg-green-600"
+  >
+    <SendHorizonal size={16} />
+  </button>
+</div>
+
         </div>
       ) : (
         <button
