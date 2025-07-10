@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { SendHorizonal, MessageCircle, X } from "lucide-react";
+import React, { useEffect, useRef, useState } from "react";
+import { SendHorizonal, MessageCircle, Mic, X } from "lucide-react";
 import { sendChatMessage } from "../model/Model";
 
 const Chatbox = () => {
@@ -12,6 +12,8 @@ const Chatbox = () => {
       : [{ text: "Hi! I'm your assistant. Ask me about any product.", sender: "bot" }];
   });
   const [loading, setLoading] = useState(false);
+  const [isListening, setIsListening] = useState(false);
+  const recognitionRef = useRef(null);
 
   const toggleChat = () => setIsOpen(!isOpen);
 
@@ -25,17 +27,51 @@ const Chatbox = () => {
     setLoading(true);
 
     const reply = await sendChatMessage(input, updatedMessages);
-
     const botMsg = { text: reply, sender: "bot" };
-    const finalMessages = [...updatedMessages, botMsg].slice(-20); 
+    const finalMessages = [...updatedMessages, botMsg].slice(-20);
     setMessages(finalMessages);
     setLoading(false);
   };
 
+  const startListening = () => {
+    if (recognitionRef.current && !isListening) {
+      recognitionRef.current.start();
+      setIsListening(true);
+    }
+  };
 
   useEffect(() => {
     sessionStorage.setItem("chatMessages", JSON.stringify(messages));
   }, [messages]);
+
+  useEffect(() => {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      console.warn("Speech recognition not supported");
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.lang = "en-US";
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    recognition.onresult = (event) => {
+      const speechText = event.results[0][0].transcript;
+      setInput(speechText);
+    };
+
+    recognition.onerror = (event) => {
+      console.error("Speech recognition error:", event.error);
+      setIsListening(false);
+    };
+
+    recognition.onend = () => {
+      setIsListening(false);
+    };
+
+    recognitionRef.current = recognition;
+  }, []);
 
   return (
     <div className="fixed bottom-4 right-4 z-50">
@@ -43,7 +79,9 @@ const Chatbox = () => {
         <div className="w-80 h-96 bg-white rounded-2xl shadow-lg flex flex-col">
           <div className="bg-green-600 text-white rounded-t-2xl px-4 py-2 flex justify-between items-center">
             <span>Assistant</span>
-            <button onClick={toggleChat} className="text-white text-sm"><X size={16}/></button>
+            <button onClick={toggleChat} className="text-white text-sm">
+              <X size={16} />
+            </button>
           </div>
           <div className="flex-1 overflow-y-auto px-4 py-2 space-y-2 text-sm">
             {messages.map((msg, index) => (
@@ -57,11 +95,16 @@ const Chatbox = () => {
                 {msg.text}
               </div>
             ))}
-            {loading && (
-              <div className="text-xs text-gray-500">Typing...</div>
-            )}
+            {loading && <div className="text-xs text-gray-500">Typing...</div>}
           </div>
-          <div className="flex border-t px-2 py-2">
+          <div className="flex border-t px-2 py-2 items-center">
+            <button
+              onClick={startListening}
+              className={`mr-2 p-2 rounded-full ${isListening ? "bg-red-100" : "bg-gray-100"}`}
+              title="Click to speak"
+            >
+              <Mic className={isListening ? "text-red-600" : "text-gray-600"} size={16} />
+            </button>
             <input
               type="text"
               value={input}
