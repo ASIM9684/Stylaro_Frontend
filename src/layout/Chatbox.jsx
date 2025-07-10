@@ -28,8 +28,6 @@ const Chatbox = () => {
 
     const reply = await sendChatMessage(input, updatedMessages);
     const botMsg = { text: reply, sender: "bot" };
-    console.log(reply);
-    
     const finalMessages = [...updatedMessages, botMsg].slice(-20);
     setMessages(finalMessages);
     setLoading(false);
@@ -86,7 +84,7 @@ const Chatbox = () => {
             </button>
           </div>
           <div className="flex-1 overflow-y-auto px-4 py-2 space-y-2 text-sm">
-         {messages.map((msg, index) => {
+ {messages.map((msg, index) => {
   return msg.sender === "user" ? (
     <div
       key={index}
@@ -99,44 +97,65 @@ const Chatbox = () => {
       key={index}
       className="bg-gray-200 p-2 rounded-lg max-w-[80%] mr-auto whitespace-pre-line"
     >
-      {msg.text.includes("Product:") ? (
-        msg.text
-          .split("\n\n")
-          .filter(p => p.includes("Product:"))
-          .map((productBlock, idx) => {
-            const lines = productBlock.split("\n");
-            const productData = {};
-            lines.forEach(line => {
-              const [key, ...rest] = line.split(": ");
-              productData[key?.trim()] = rest.join(": ").trim();
-            });
+      {(() => {
+        const blocks = msg.text.split("\n\n");
+        const productBlocks = blocks.filter(b => b.includes("Product:"));
+        const messageTextOnly = blocks
+          .filter(b => !b.includes("Product:"))
+          .join("\n\n");
 
-            return (
-            <div key={idx} className="mb-2 p-2 border rounded bg-white shadow text-left text-xs">
-  <div><strong>{productData["Product"]}</strong></div>
-  
-{productData["Image"]?.startsWith("http") && (
-  <img
-    src={productData["Image"]}
-    alt={productData["Product"] || "Product Image"}
-    className="w-24 h-24 object-contain rounded my-2"
-  />
-)}
+        return (
+          <>
+            {/* Show only the message text */}
+            {messageTextOnly && (
+              <div className="mb-2 whitespace-pre-line text-sm">
+                {messageTextOnly}
+              </div>
+            )}
 
-  <div>Price: {productData["Price"]}</div>
-  <div>Rating: {productData["Rating"]}</div>
-  <div>Gender: {productData["Gender"]}</div>
-  <div>Category: {productData["Category"]}</div>
-  <div>Color: {productData["Color"]}</div>
-  <div>Quantity: {productData["Quantity"]}</div>
-  <div>Discount: %{productData["Discount"]}</div>
-</div>
+            {/* Render product cards below */}
+            {productBlocks.map((productBlock, idx) => {
+              const lines = productBlock.split("\n");
+              const productData = {};
+              lines.forEach(line => {
+                const [key, ...rest] = line.split(": ");
+                productData[key?.trim()] = rest.join(": ").trim();
+              });
 
-            );
-          })
-      ) : (
-        <div>{msg.text}</div>
-      )}
+              return (
+                <div
+                  key={idx}
+                  className="mb-2 p-2 border rounded bg-white shadow text-left text-xs"
+                >
+                  <div>
+                    <strong>{productData["Product"]}</strong>
+                  </div>
+
+                  {productData["Image"]?.startsWith("http") && (
+                    <img
+                      src={productData["Image"]}
+                      alt={productData["Product"] || "Product Image"}
+                      className="w-24 h-24 object-contain rounded my-2"
+                    />
+                  )}
+
+                  <div>
+                     Price: $
+                      {productData["Price"]}
+                  </div>
+
+                  <div> Rating: {productData["Rating"]}</div>
+                  <div> Gender: {productData["Gender"]}</div>
+                  <div> Category: {productData["Category"]}</div>
+                  <div> Color: {productData["Color"]}</div>
+                  <div> Quantity: {productData["Quantity"]}</div>
+                  <div> Discount: %{productData["Discount"]}</div>
+                </div>
+              );
+            })}
+          </>
+        );
+      })()}
     </div>
   );
 })}
