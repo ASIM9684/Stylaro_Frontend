@@ -140,7 +140,7 @@ const Chatbox = () => {
                   )}
 
                   <div>
-                     Price: $
+                     Price:
                       {productData["Price"]}
                   </div>
 
