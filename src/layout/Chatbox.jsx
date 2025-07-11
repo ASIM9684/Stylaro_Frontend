@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { SendHorizonal, MessageCircle, Mic, X } from "lucide-react";
+import { SendHorizonal, MessageCircle, Mic, X, Star } from "lucide-react";
 import { sendChatMessage } from "../model/Model";
 
 const Chatbox = () => {
@@ -143,7 +143,7 @@ const Chatbox = () => {
                      Price: {productData["Price"]}
                   </div>
 
-                  <div> Rating: {productData["Rating"]}</div>
+                  <div className="flex items-center"> Rating: <Star size={9} className="fill-yellow-400 text-yellow-400 mx-1" />  {productData["Rating"]}</div>
                   <div> Gender: {productData["Gender"]}</div>
                   <div> Category: {productData["Category"]}</div>
                   <div> Color: {productData["Color"]}</div>
