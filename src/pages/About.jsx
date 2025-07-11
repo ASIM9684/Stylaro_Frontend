@@ -15,7 +15,7 @@ const About = () => {
         </div>
 
         {/* Mission Section */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center mb-16 bg-white p-4 rounded-2xl overflow-hidden">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center mb-16 bg-white p-4 rounded-2xl overflow-hidden shadow-lg">
          <img
   src="https://img.freepik.com/free-photo/group-people-working-out-business-plan-office_1303-15864.jpg"
   alt="Our mission"
@@ -32,7 +32,7 @@ const About = () => {
         </div>
 
         {/* Vision Section */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center overflow-hidden rounded-2xl bg-white p-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center overflow-hidden rounded-2xl bg-white p-4 shadow-lg">
           <div>
             <h2 className="text-2xl font-semibold text-gray-800 mb-2">Our Vision</h2>
             <p className="text-gray-600 leading-relaxed">
