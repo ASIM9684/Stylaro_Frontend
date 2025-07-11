@@ -15,12 +15,13 @@ const About = () => {
         </div>
 
         {/* Mission Section */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center mb-16">
-          <img
-            src="https://img.freepik.com/free-photo/group-people-working-out-business-plan-office_1303-15864.jpg"
-            alt="Our mission"
-            className="w-full rounded-2xl shadow-lg object-cover h-[300px]"
-          />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center mb-16 bg-white p-4 rounded-2xl overflow-hidden">
+         <img
+  src="https://img.freepik.com/free-photo/group-people-working-out-business-plan-office_1303-15864.jpg"
+  alt="Our mission"
+  className="w-full h-[300px] rounded-2xl shadow-lg object-cover transform transition-transform duration-300 hover:scale-105"
+/>
+
           <div>
             <h2 className="text-2xl font-semibold text-gray-800 mb-2">Our Mission</h2>
             <p className="text-gray-600 leading-relaxed">
@@ -31,7 +32,7 @@ const About = () => {
         </div>
 
         {/* Vision Section */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center overflow-hidden rounded-2xl bg-white p-4">
           <div>
             <h2 className="text-2xl font-semibold text-gray-800 mb-2">Our Vision</h2>
             <p className="text-gray-600 leading-relaxed">
@@ -42,7 +43,7 @@ const About = () => {
           <img
             src="https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
             alt="Our vision"
-            className="w-full rounded-2xl shadow-lg object-cover h-[300px]"
+            className="w-full h-[300px] rounded-2xl shadow-lg object-cover transform transition-transform duration-300 hover:scale-105"
           />
         </div>
 
