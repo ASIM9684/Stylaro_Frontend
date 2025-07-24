@@ -3,13 +3,13 @@ import axios from "axios";
 import { getAuthHeader } from "../../model/Model";
 import { showErrorToast } from "../../utlis/toast";
 
-const API_URL = "https://stylarobackend.zeabur.app/complain";
+const API_URL = "https://stylaro.zeabur.app/complain";
 
 export const fetchcomplains = createAsyncThunk(
   "complain/fetchAll",
   async (id = null, { rejectWithValue }) => {
     try {
-      const endpoint = id ? "https://stylarobackend.zeabur.app/getComplainsbyUser" : API_URL;
+      const endpoint = id ? "https://stylaro.zeabur.app/getComplainsbyUser" : API_URL;
       const response = await axios.get(endpoint, {
         headers: getAuthHeader(),
       })

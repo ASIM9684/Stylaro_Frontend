@@ -82,7 +82,7 @@ const CartPage = () => {
       }
 
       const response = await axios.post(
-        "https://stylarobackend.zeabur.app/order",
+        "https://stylaro.zeabur.app/order",
         {
           items: cartItems,
           address: address,

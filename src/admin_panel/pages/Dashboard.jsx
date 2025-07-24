@@ -21,7 +21,7 @@ const Dashboard = () => {
   });
 
   useEffect(() => {
-    const socket = io("https://stylarobackend.zeabur.app");
+    const socket = io("https://stylaro.zeabur.app");
 
     socket.on("connect", () => {
       console.log("🟢 Connected to WebSocket");
@@ -47,10 +47,10 @@ const Dashboard = () => {
   const fetchDashboardData = async () => {
     try {
       const [chartRes, countRes] = await Promise.all([
-        axios.get("https://stylarobackend.zeabur.app/monthlyOrderChart", {
+        axios.get("https://stylaro.zeabur.app/monthlyOrderChart", {
           headers: getAuthHeader()
         }),
-        axios.get("https://stylarobackend.zeabur.app/getDashboardCount", {
+        axios.get("https://stylaro.zeabur.app/getDashboardCount", {
           headers: getAuthHeader()
         }),
       ]);
